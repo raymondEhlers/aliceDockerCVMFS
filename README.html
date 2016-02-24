@@ -81,7 +81,7 @@
 <h2 id="pre-built-packages">Pre-Built Packages</h2>
 <p>The work flow here is to load pre-built package(s) and run them. For example, one could download a test train, load the tag via CVMFS, and then test the train against that tag. You could also build against the packages if you have code that depends on AliRoot or AliPhysics (for building AliPhysics, see <a href="#compile-your-own-code">below</a>).</p>
 <ol start="0" style="list-style-type: decimal">
-<li>Install the <a href="#prerequisites">prerequisites</a> for your platform.</li>
+<li><p>Install the <a href="#prerequisites">prerequisites</a> for your platform.</p></li>
 <li><p>Start Docker and make your $HOME directory available to the Docker container. If necessary, other folders can be made available in the <a href="#startdocker.sh-user-configuration">user configuration</a>.</p>
 <pre><code>$ ./startDocker.sh</code></pre></li>
 <li><p>We are now inside of the image, so the prompt should have changed. Now just configure CVMFS:</p>
@@ -100,15 +100,15 @@ CernVM-FS: mounted cvmfs on /cvmfs/alice.cern.ch</code></pre></li>
 <h3 id="setup-aliphysics-and-the-alice-environment">Setup AliPhysics and the ALICE environment</h3>
 <p>These steps only need to be performed once, although steps 2 and 3 will need to be edited if you are using a different AliPhysics version or repeated if you change AliPhysics versions.</p>
 <ol style="list-style-type: decimal">
-<li>Install AliPhysics and all prerequisites on your system. Use Dario’s instructions.</li>
+<li><p>Install AliPhysics and all prerequisites on your system. Use Dario’s instructions.</p></li>
 <li><p>Add the following lines to your <code>alice-env.conf</code> file. Note the AliTuple array value (here it is 3) must be continuous within your <code>alice-env.conf</code> file.</p>
 <pre><code># Must be run after loading an environment from alienv on CVMFS!
 AliTuple[3]=&quot;alien=${ALIEN_RUNTIME_ROOT} \
-         root=${ROOTSYS} \
-         fastjet=${FASTJET} \
-         geant3=${GEANT3_ROOT} \
-         aliroot=${ALICE_ROOT} \
-         aliphysics=dockerMaster(master)&quot;</code></pre></li>
+             root=${ROOTSYS} \
+             fastjet=${FASTJET} \
+             geant3=${GEANT3_ROOT} \
+             aliroot=${ALICE_ROOT} \
+             aliphysics=dockerMaster(master)&quot;</code></pre></li>
 <li><p>To ensure that you do not overwrite the build on your local machine, make sure so set a build folder, which in the above example is <code>dockerMaster</code> (the AliPhysics version is in parenthesis). To create this folder, run</p>
 <pre><code>$ git-new-workdir &quot;${ALICE_PREFIX}/aliphysics/git&quot; &quot;$(dirname &quot;$ALICE_PHYSICS&quot;)/src&quot;</code></pre></li>
 </ol>

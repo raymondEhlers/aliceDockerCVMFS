@@ -48,16 +48,21 @@ Mac OS X Specific:
 #### Mac OS X Prerequisites
 
 1. `docker-machine`. Install via:
+
     ```
     $ brew cask install dockertoolbox
     ```
+
 2. [`docker-machine-nfs`](https://github.com/adlogix/docker-machine-nfs). From the documentation, use:
+
     ```
     $ curl -s https://raw.githubusercontent.com/adlogix/docker-machine-nfs/master/docker-machine-nfs.sh |
       sudo tee /usr/local/bin/docker-machine-nfs > /dev/null && \
       sudo chmod +x /usr/local/bin/docker-machine-nfs
     ```
+
 3. Create a docker-machine VM named `default`. Note that this will only use the space actually required to store the VM, growing up to 30 GB total. The initial size when everything is setup is approximately 2 GB.
+
     ```
     $ docker-machine create --driver virtualbox --virtualbox-disk-size "30000" default
     ```
@@ -66,29 +71,34 @@ Mac OS X Specific:
 
 #### Linux Prerequisites
 1. `docker`. See [here](https://docs.docker.com/linux/step_one/). Roughly, the instructions are to use:
-```
-$ curl -fsSL https://get.docker.com/ | sh
-```
+
+    ```
+    $ curl -fsSL https://get.docker.com/ | sh
+    ```
 
 ## Pre-Built Packages
 
 The work flow here is to load pre-built package(s) and run them. For example, one could download a test train, load the tag via CVMFS, and then test the train against that tag. You could also build against the packages if you have code that depends on AliRoot or AliPhysics (for building AliPhysics, see [below](#compile-your-own-code)).
 
 0. Install the [prerequisites](#prerequisites) for your platform.
+
 1. Start Docker and make your $HOME directory available to the Docker container. If necessary, other folders can be made available in the [user configuration](#startdocker.sh-user-configuration).
-```
-$ ./startDocker.sh
-```
+
+    ```
+    $ ./startDocker.sh
+    ```
+
 2. We are now inside of the image, so the prompt should have changed. Now just configure CVMFS:
-```
-# Your output should look very similar
-> source setupAliceEnv.sh
-Warning: autofs service is not running
-Warning: failed to use Geo-API with cvmfs.racf.bnl.gov
-CernVM-FS: running with credentials 498:497
-CernVM-FS: loading Fuse module... done
-CernVM-FS: mounted cvmfs on /cvmfs/alice.cern.ch
-```
+
+    ```
+    # Your output should look very similar
+    > source setupAliceEnv.sh
+    Warning: autofs service is not running
+    Warning: failed to use Geo-API with cvmfs.racf.bnl.gov
+    CernVM-FS: running with credentials 498:497
+    CernVM-FS: loading Fuse module... done
+    CernVM-FS: mounted cvmfs on /cvmfs/alice.cern.ch
+    ```
 
 You can now use CVMFS! See the [usage instructions](#usage-instructions). If you need more advanced options, see the [user configuration](#startdocker.sh-user-configuration).
 
@@ -103,16 +113,19 @@ Note: If your code is stand-alone from packages (ie. If it is not contained in a
 These steps only need to be performed once, although steps 2 and 3 will need to be edited if you are using a different AliPhysics version or repeated if you change AliPhysics versions.
 
 1. Install AliPhysics and all prerequisites on your system. Use Dario's instructions.
+
 2. Add the following lines to your `alice-env.conf` file. Note the AliTuple array value (here it is 3) must be continuous within your `alice-env.conf` file.
-```
-# Must be run after loading an environment from alienv on CVMFS!
-AliTuple[3]="alien=${ALIEN_RUNTIME_ROOT} \
-             root=${ROOTSYS} \
-             fastjet=${FASTJET} \
-             geant3=${GEANT3_ROOT} \
-             aliroot=${ALICE_ROOT} \
-             aliphysics=dockerMaster(master)"
-```
+
+    ```
+    # Must be run after loading an environment from alienv on CVMFS!
+    AliTuple[3]="alien=${ALIEN_RUNTIME_ROOT} \
+                 root=${ROOTSYS} \
+                 fastjet=${FASTJET} \
+                 geant3=${GEANT3_ROOT} \
+                 aliroot=${ALICE_ROOT} \
+                 aliphysics=dockerMaster(master)"
+    ```
+
 3. To ensure that you do not overwrite the build on your local machine, make sure so set a build folder, which in the above example is `dockerMaster` (the AliPhysics version is in parenthesis). To create this folder, run
 ```
 $ git-new-workdir "${ALICE_PREFIX}/aliphysics/git" "$(dirname "$ALICE_PHYSICS")/src"
