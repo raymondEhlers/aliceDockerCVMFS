@@ -48,19 +48,20 @@ Mac OS X Specific:
 #### Mac OS X Prerequisites
 
 1. `docker-machine`. Install via:
-```
-$ brew cask install dockertoolbox
-```
+    ```
+    $ brew cask install dockertoolbox
+    ```
 2. [`docker-machine-nfs`](https://github.com/adlogix/docker-machine-nfs). From the documentation, use:
-```
-$ curl -s https://raw.githubusercontent.com/adlogix/docker-machine-nfs/master/docker-machine-nfs.sh |
-  sudo tee /usr/local/bin/docker-machine-nfs > /dev/null && \
-  sudo chmod +x /usr/local/bin/docker-machine-nfs
-```
+    ```
+    $ curl -s https://raw.githubusercontent.com/adlogix/docker-machine-nfs/master/docker-machine-nfs.sh |
+      sudo tee /usr/local/bin/docker-machine-nfs > /dev/null && \
+      sudo chmod +x /usr/local/bin/docker-machine-nfs
+    ```
 3. Create a docker-machine VM named `default`. Note that this will only use the space actually required to store the VM, growing up to 30 GB total. The initial size when everything is setup is approximately 2 GB.
-```
-$ docker-machine create --driver virtualbox --virtualbox-disk-size "30000" default
-```
+    ```
+    $ docker-machine create --driver virtualbox --virtualbox-disk-size "30000" default
+    ```
+
 4. (Recommended) Remove Docker files from Time Machine. These files change very frequently and are very easy to recreate. Go to the Time Machine settings, click options, and then exclude `~/.docker/machine/machines`. When adding the folder, you may need to click on options to show hidden files.
 
 #### Linux Prerequisites
