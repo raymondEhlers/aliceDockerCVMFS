@@ -1,0 +1,8 @@
+# Ignore the interal file
+.startDockerInternal
+
+# Ignore the local user configuration
+userConfig.conf
+
+# Folders
+bak

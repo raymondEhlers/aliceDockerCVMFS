@@ -1,0 +1,248 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link href="data:text/css;charset=utf-8,%0A%0A%0A%0Adiv%23header%2C%20header%0A%7B%0A%0Aborder%2Dbottom%3A%201px%20solid%20%23aaa%3B%0Amargin%2Dbottom%3A%200%2E5em%3B%0A%7D%0A%2Etitle%20%0A%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%2Eauthor%2C%20%2Edate%20%0A%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%0Adiv%23TOC%2C%20nav%23TOC%0A%7B%0A%0Aborder%2Dbottom%3A%201px%20solid%20%23aaa%3B%0Amargin%2Dbottom%3A%200%2E5em%3B%0A%7D%0A%40media%20print%0A%7B%0Adiv%23TOC%2C%20nav%23TOC%0A%7B%0A%0Adisplay%3A%20none%3B%0A%7D%0A%7D%0A%0Abody%0A%7B%0Awidth%3A%20900px%3B%0Amargin%2Dleft%3A%20auto%3B%0Amargin%2Dright%3A%20auto%3B%0A%7D%0A%0Ah1%2C%20h2%2C%20h3%2C%20h4%2C%20h5%2C%20h6%0A%7B%0Afont%2Dfamily%3A%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20%22Liberation%20Sans%22%2C%20Calibri%2C%20Arial%2C%20sans%2Dserif%3B%20%0A%0Apage%2Dbreak%2Dafter%3A%20avoid%3B%20%0A%7D%0A%0Adiv%20div%2C%20section%20section%20%0A%7B%0Amargin%2Dleft%3A%202em%3B%20%0A%7D%0Ap%20%7B%7D%0Ablockquote%0A%7B%20font%2Dstyle%3A%20italic%3B%0A%7D%0Ali%20%0A%7B%0A%7D%0Ali%20%3E%20p%20%0A%7B%0Amargin%2Dtop%3A%201em%3B%20%0A%7D%0Aul%20%0A%7B%0A%7D%0Aul%20li%20%0A%7B%0A%7D%0Aol%20%0A%7B%0A%7D%0Aol%20li%20%0A%7B%0A%7D%0Ahr%20%7B%7D%0A%0Asub%20%0A%7B%0A%7D%0Asup%20%0A%7B%0A%7D%0Aem%20%0A%7B%0A%7D%0Aem%20%3E%20em%20%0A%7B%0Afont%2Dstyle%3A%20normal%3B%0A%7D%0Astrong%20%0A%7B%0A%7D%0A%0Aa%20%0A%7B%0A%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0A%40media%20screen%0A%7B%0Aa%3Ahover%0A%7B%0A%0Atext%2Ddecoration%3A%20underline%3B%0A%7D%0A%7D%0A%40media%20print%0A%7B%0Aa%20%7B%0A%0Acolor%3A%20black%3B%0Abackground%3A%20transparent%3B%0A%7D%0Aa%5Bhref%5E%3D%22http%3A%2F%2F%22%5D%3Aafter%2C%20a%5Bhref%5E%3D%22https%3A%2F%2F%22%5D%3Aafter%0A%7B%0A%0Acontent%3A%20%22%20%28%22%20attr%28href%29%20%22%29%20%22%3B%0Afont%2Dsize%3A%2090%25%3B%0A%7D%0A%7D%0A%0Aimg%0A%7B%0A%0Avertical%2Dalign%3A%20middle%3B%0A%7D%0Adiv%2Efigure%20%0A%7B%0A%0Amargin%2Dleft%3A%20auto%3B%0Amargin%2Dright%3A%20auto%3B%0Atext%2Dalign%3A%20center%3B%0Afont%2Dstyle%3A%20italic%3B%0A%7D%0Ap%2Ecaption%20%0A%7B%0A%0A%7D%0A%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23fdf7ee%3B%0A%0A%0A%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0Awhite%2Dspace%3A%20%2Dmoz%2Dpre%2Dwrap%20%21important%3B%20%0Awhite%2Dspace%3A%20%2Dpre%2Dwrap%3B%20%0Awhite%2Dspace%3A%20%2Do%2Dpre%2Dwrap%3B%20%0Aword%2Dwrap%3A%20break%2Dword%3B%20%0A%0A%7D%0Apre%20%0A%7B%0A%0Apadding%3A%200%2E5em%3B%20%0Aborder%2Dradius%3A%205px%3B%20%0A%0Aborder%3A%201px%20solid%20%23aaa%3B%0A%0Amargin%2Dleft%3A%200%2E5em%3B%0Amargin%2Dright%3A%200%2E5em%3B%0A%7D%0A%40media%20screen%0A%7B%0Apre%0A%7B%0A%0Awhite%2Dspace%3A%20pre%3B%0Aoverflow%3A%20auto%3B%0A%0Aborder%3A%201px%20dotted%20%23777%3B%0A%7D%0A%7D%0Acode%20%0A%7B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%0A%7B%0A%0Apadding%2Dleft%3A%202px%3B%0Apadding%2Dright%3A%202px%3B%0A%7D%0Ali%20%3E%20p%20code%20%0A%7B%0A%0Apadding%3A%202px%3B%0A%7D%0A%0Aspan%2Emath%20%0A%7B%0A%0A%7D%0Adiv%2Emath%20%0A%7B%0A%7D%0Aspan%2ELaTeX%20%0A%7B%0A%7D%20eq%20%0A%7B%0A%7D%20%0A%0Atable%0A%7B%0Aborder%2Dcollapse%3A%20collapse%3B%0Aborder%2Dspacing%3A%200%3B%20%0Aborder%2Dbottom%3A%202pt%20solid%20%23000%3B%0Aborder%2Dtop%3A%202pt%20solid%20%23000%3B%20%0A%0Amargin%2Dleft%3A%20auto%3B%0Amargin%2Dright%3A%20auto%3B%0A%7D%0Athead%20%0A%7B%0Aborder%2Dbottom%3A%201pt%20solid%20%23000%3B%0Abackground%2Dcolor%3A%20%23eee%3B%20%0A%7D%0Atr%2Eheader%20%0A%7B%0A%7D%20tbody%20%0A%7B%0A%7D%0A%0Atr%20%7B%0A%7D%0Atr%2Eodd%3Ahover%2C%20tr%2Eeven%3Ahover%20%0A%7B%0Abackground%2Dcolor%3A%20%23eee%3B%0A%7D%0A%0Atr%2Eodd%20%7B%7D%0Atr%2Eeven%20%7B%7D%0Atd%2C%20th%20%0A%7B%20vertical%2Dalign%3A%20top%3B%20%0Avertical%2Dalign%3A%20baseline%3B%20%0Apadding%2Dleft%3A%200%2E5em%3B%0Apadding%2Dright%3A%200%2E5em%3B%0Apadding%2Dtop%3A%200%2E2em%3B%0Apadding%2Dbottom%3A%200%2E2em%3B%0A%7D%0A%0A%0Ath%20%0A%7B%0Afont%2Dweight%3A%20bold%3B%20%7D%0Atfoot%20%0A%7B%0A%7D%0Acaption%20%0A%7B%0Acaption%2Dside%3A%20top%3B%0Aborder%3A%20none%3B%0Afont%2Dsize%3A%200%2E9em%3B%0Afont%2Dstyle%3A%20italic%3B%0Atext%2Dalign%3A%20center%3B%0Amargin%2Dbottom%3A%200%2E3em%3B%20%0Apadding%2Dbottom%3A%200%2E2em%3B%0A%7D%0A%0Adl%20%0A%7B%0Aborder%2Dtop%3A%202pt%20solid%20black%3B%0Apadding%2Dtop%3A%200%2E5em%3B%0Aborder%2Dbottom%3A%202pt%20solid%20black%3B%0A%7D%0Adt%20%0A%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Add%2Bdt%20%0A%7B%0Aborder%2Dtop%3A%201pt%20solid%20black%3B%0Apadding%2Dtop%3A%200%2E5em%3B%0A%7D%0Add%20%0A%7B%0Amargin%2Dbottom%3A%200%2E5em%3B%0A%7D%0Add%2Bdd%20%0A%7B%0Aborder%2Dtop%3A%201px%20solid%20black%3B%20%0A%7D%0A%0Aa%2Efootnote%2C%20a%2EfootnoteRef%20%7B%20%0Afont%2Dsize%3A%20small%3B%20vertical%2Dalign%3A%20text%2Dtop%3B%0A%7D%0Aa%5Bhref%5E%3D%22%23fnref%22%5D%2C%20a%2Ereversefootnote%20%0A%7B%0A%7D%0A%40media%20print%0A%7B%0Aa%5Bhref%5E%3D%22%23fnref%22%5D%2C%20a%2Ereversefootnote%20%0A%7B%0A%0Adisplay%3A%20none%3B%0A%7D%0A%7D%0Adiv%2Efootnotes%20%0A%7B%0A%7D%0Adiv%2Efootnotes%20li%5Bid%5E%3D%22fn%22%5D%20%0A%7B%0A%7D%0A%0A%40media%20print%0A%7B%0A%2Enoprint%0A%7B%0Adisplay%3Anone%3B%0A%7D%0A%7D%0A" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<h1 id="alice-cvmfs-instructions">ALICE CVMFS Instructions</h1>
+<p>By: Raymond Ehlers (raymond.ehlers@yale.edu), Yale RHIG, Feb 2016. Thanks to James Mulligan, Salvatore Aiola, and Eliane Epple for suggestions and help in testing out the scripts and instructions.</p>
+<p>These instructions will allow you to download and use compiled versions of Alien, Root, AliRoot, GEANT3, and Fastjet (+ contrib). With this approach, getting the latest version (or any version) of any piece of software is just a matter of running a few commands. When a library or executable is needed, it will be downloaded automatically. We can even compile AliPhysics using pre-built AliRoot packages!</p>
+<p>These instructions will work for both Mac OS X and Linux.</p>
+<p>There are two main work flows:</p>
+<ul>
+<li>Use pre-built package(s) (for example, AliPhysics) and run over data. For more, see <a href="#pre-built-packages">here</a>.</li>
+<li>Use pre-built package(s) (for example, AliRoot) and compile other code against it (for example, a local copy of AliPhysics). For more, see <a href="#compile-your-own-code">here</a>.</li>
+</ul>
+<p>To establish terminology, this is achieved by using a Docker container. A container is roughly an operating system image that has been configured with software. In our case, I have created an image that allows us to use CVMFS. On Mac OS X, this container must run inside of a virtual machine, but all of this is transparent to the user, so the details are not important.</p>
+<p>Before beginning, it is important to a few things to keep in mind:</p>
+<ol style="list-style-type: decimal">
+<li>Initial access of a given file or executable can be a little slow. Be patient. This should only happen the first time you access the file for a given package (ie when you open <code>aliroot</code>). Once it is loaded, it will work as normal, and should be about as fast as normal.</li>
+<li>This setup requires network connectivity! You are pulling these pre-built packages dynamically so if your network connect is not great, then the performance may not be great. Of course, once the packages are downloaded, this should not be an issue.</li>
+</ol>
+<p>Mac OS X Specific:</p>
+<ol start="3" style="list-style-type: decimal">
+<li>We are sharing files over an internal network connection (<code>nfs</code>) to the Docker container. Consequently, it may be slightly slower than running everything natively. I have not noticed any performance issues so far, but I wouldn’t recommend running something like a full train using this setup (not that I anticipate anyone would want to do that).</li>
+</ol>
+<h4 id="table-of-contents">Table of Contents</h4>
+<ul>
+<li><a href="#prerequisites">Prerequisites</a>
+<ul>
+<li><a href="#mac-os-x-prerequisites">Mac OS X</a></li>
+<li><a href="#linux-prerequisites">Linux</a></li>
+</ul></li>
+<li><a href="#pre-built-packages">Pre-Built Packages</a></li>
+<li><a href="#compile-your-own-code">Compile Your Own Code</a></li>
+<li><a href="#startdocker.sh-user-configuration"><code>startDocker.sh</code> User Configuration</a></li>
+<li><a href="#usage-instructions">Usage Instructions</a>
+<ul>
+<li><a href="#usage-notes">Usage Notes</a></li>
+<li><a href="#cvmfs-instructions">CVMFS Instructions</a></li>
+</ul></li>
+<li><a href="#troubleshooting">Troubleshooting</a>
+<ul>
+<li><a href="#general-troubleshooting">General</a></li>
+<li><a href="#mac-os-x-specific-troubleshooting">Mac OS X Specific</a>
+<ul>
+<li><a href="#docker-machine-nfs-troubleshooting"><code>docker-machine-nfs</code> Specific</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#technical-details">Technical Details</a>
+<ul>
+<li><a href="#startdocker.sh-script"><code>startDocker.sh</code> Script</a></li>
+<li><a href="#script-details">Script Details</a></li>
+</ul></li>
+</ul>
+<h2 id="prerequisites">Prerequisites</h2>
+<ol start="0" style="list-style-type: decimal">
+<li><strong>Make a backup!</strong> Everything should be perfectly fine, but it’s a good idea to be safe.</li>
+</ol>
+<h4 id="mac-os-x-prerequisites">Mac OS X Prerequisites</h4>
+<ol style="list-style-type: decimal">
+<li><p><code>docker-machine</code>. Install via:</p>
+<pre><code>$ brew cask install dockertoolbox</code></pre></li>
+<li><p><a href="https://github.com/adlogix/docker-machine-nfs"><code>docker-machine-nfs</code></a>. From the documentation, use:</p>
+<pre><code>$ curl -s https://raw.githubusercontent.com/adlogix/docker-machine-nfs/master/docker-machine-nfs.sh |
+  sudo tee /usr/local/bin/docker-machine-nfs &gt; /dev/null &amp;&amp; \
+  sudo chmod +x /usr/local/bin/docker-machine-nfs</code></pre></li>
+<li><p>Create a docker-machine VM named <code>default</code>. Note that this will only use the space actually required to store the VM, growing up to 30 GB total. The initial size when everything is setup is approximately 2 GB.</p>
+<pre><code>$ docker-machine create --driver virtualbox --virtualbox-disk-size &quot;30000&quot; default</code></pre></li>
+<li><p>(Recommended) Remove Docker files from Time Machine. These files change very frequently and are very easy to recreate. Go to the Time Machine settings, click options, and then exclude <code>~/.docker/machine/machines</code>. When adding the folder, you may need to click on options to show hidden files.</p></li>
+</ol>
+<h4 id="linux-prerequisites">Linux Prerequisites</h4>
+<ol style="list-style-type: decimal">
+<li><p><code>docker</code>. See <a href="https://docs.docker.com/linux/step_one/">here</a>. Roughly, the instructions are to use:</p>
+<pre><code>$ curl -fsSL https://get.docker.com/ | sh</code></pre></li>
+</ol>
+<h2 id="pre-built-packages">Pre-Built Packages</h2>
+<p>The work flow here is to load pre-built package(s) and run them. For example, one could download a test train, load the tag via CVMFS, and then test the train against that tag. You could also build against the packages if you have code that depends on AliRoot or AliPhysics (for building AliPhysics, see <a href="#compile-your-own-code">below</a>).</p>
+<ol start="0" style="list-style-type: decimal">
+<li><p>Install the <a href="#prerequisites">prerequisites</a> for your platform.</p></li>
+<li><p>Start Docker and make your $HOME directory available to the Docker container. If necessary, other folders can be made available in the <a href="#startdocker.sh-user-configuration">user configuration</a>.</p>
+<pre><code>$ ./startDocker.sh</code></pre></li>
+<li><p>We are now inside of the image, so the prompt should have changed. Now just configure CVMFS:</p>
+<pre><code># Your output should look very similar
+&gt; source setupAliceEnv.sh
+Warning: autofs service is not running
+Warning: failed to use Geo-API with cvmfs.racf.bnl.gov
+CernVM-FS: running with credentials 498:497
+CernVM-FS: loading Fuse module... done
+CernVM-FS: mounted cvmfs on /cvmfs/alice.cern.ch</code></pre></li>
+</ol>
+<p>You can now use CVMFS! See the <a href="#usage-instructions">usage instructions</a>. If you need more advanced options, see the <a href="#startdocker.sh-user-configuration">user configuration</a>.</p>
+<h2 id="compile-your-own-code">Compile Your Own Code</h2>
+<p>The work flow here is that you develop in your normal install of AliPhysics on your system (ie that you installed via the automatic or manual installation instructions). Once you are done developing, you load all of the dependencies in CVMFS, compile in the Docker container, and then you work as normal (test, run over data, etc). If you need to make changes to your code, you can edit the file either in</p>
+<p>Note: If your code is stand-alone from packages (ie. If it is not contained in a package, such that you would need to recompile it), then you can just use the method <a href="#pre-built-packages">above</a>.</p>
+<h3 id="setup-aliphysics-and-the-alice-environment">Setup AliPhysics and the ALICE environment</h3>
+<p>These steps only need to be performed once, although steps 2 and 3 will need to be edited if you are using a different AliPhysics version or repeated if you change AliPhysics versions.</p>
+<ol style="list-style-type: decimal">
+<li><p>Install AliPhysics and all prerequisites on your system. Use Dario’s instructions.</p></li>
+<li><p>Add the following lines to your <code>alice-env.conf</code> file.</p>
+<pre><code># Must be run after loading an environment from alienv on CVMFS!
+AliTuple[3]=&quot;alien=${ALIEN_RUNTIME_ROOT} \
+         root=${ROOTSYS} \
+         fastjet=${FASTJET} \
+         geant3=${GEANT3_ROOT} \
+         aliroot=${ALICE_ROOT} \
+         aliphysics=dockerMaster(master)&quot;</code></pre></li>
+</ol>
+<p>Also note the AliTuple array value (here it is 3) must be continuous within your <code>alice-env.conf</code> file.</p>
+<ol start="3" style="list-style-type: decimal">
+<li><p>To ensure that you do not overwrite the build on your local machine, make sure so set a build folder, which in the above example is <code>dockerMaster</code> (the AliPhysics version is in parenthesis). To create this folder, run</p>
+<pre><code>$ git-new-workdir &quot;${ALICE_PREFIX}/aliphysics/git&quot; &quot;$(dirname &quot;$ALICE_PHYSICS&quot;)/src&quot;</code></pre></li>
+</ol>
+<h3 id="compiling-inside-of-the-docker-container">Compiling Inside of the Docker Container</h3>
+<ol style="list-style-type: decimal">
+<li><p>Start Docker and make your $HOME directory available to the Docker container. If necessary, other folders can be made available in the <a href="#startdocker.sh-user-configuration">user configuration</a>.</p>
+<pre><code>$ ./startDocker.sh</code></pre></li>
+<li><p>We are now inside the image, so the prompt should have changed. Now configure CVMFS. For CVMFS usage information, see <a href="#cvmfs-instructions">here</a>.</p>
+<pre><code># Your output should look very similar
+$ source setupAliceEnv.sh
+Warning: autofs service is not running
+Warning: failed to use Geo-API with cvmfs.racf.bnl.gov
+CernVM-FS: running with credentials 498:497
+CernVM-FS: loading Fuse module... done
+CernVM-FS: mounted cvmfs on /cvmfs/alice.cern.ch
+$ alienv enter # AliRoot Version</code></pre></li>
+<li><p>Setup the ALICE environment.</p>
+<pre><code>$ cd $ALICE_PREFIX
+$ source alice-env.sh</code></pre></li>
+<li><p>Run CMake and compile.</p>
+<pre><code># Create the directory and move to it
+$ mkdir -p &quot;$(dirname &quot;$ALICE_PHYSICS&quot;)/build&quot; &amp;&amp; cd &quot;$_&quot;
+# CMake and compile. cmakeCommand is listed below in the useful commands section.
+$ eval $cmakeCommand
+$ make install</code></pre></li>
+</ol>
+<p>Done! See the <a href="#usage-instructions">usage instructions</a> and the <a href="#useful-commands">useful commands</a> section below. If you need more advanced options, see the <a href="#startdocker.sh-user-configuration">user configuration</a>.</p>
+<h3 id="useful-commands">Useful Commands</h3>
+<p>A number of variable are defined in the container for convenience. Additional variables can be set by the user. See the <a href="#startdocker.sh-user-configuration">user configuration</a>.</p>
+<ul>
+<li><code>$ALICE_PREFIX</code> is set if you loaded the ALICE environment on your local machine before running the <code>startDocker.sh</code> script. Otherwise, it automatically be set to “<span class="math inline">$HOME/alicesw&quot;, as `$</span>ALICE_PREFIX`is often set to this value.</li>
+<li><p><code>$cmakeCommand</code> is set to the cmake command for AliPhysics so that you do not need to copy and paste. Use it with <code>eval $cmakeCommand</code>. The specific command (as of Feb 2016) is</p>
+<pre><code>cmake &quot;$(dirname &quot;$ALICE_PHYSICS&quot;)/src&quot; -DCMAKE_INSTALL_PREFIX=&quot;$ALICE_PHYSICS&quot; -DCMAKE_C_COMPILER=`root-config --cc` -DCMAKE_CXX_COMPILER=`root-config --cxx` -DCMAKE_Fortran_COMPILER=`root-config --f77` -DALIEN=&quot;$ALIEN_DIR&quot; -DROOTSYS=&quot;$ROOTSYS&quot; -DFASTJET=&quot;$FASTJET&quot; -DCGAL=&quot;$CGAL_ROOT&quot; -DALIROOT=&quot;$ALICE_ROOT&quot; -DCMAKE_BUILD_TYPE=RELWITHDEBINFO </code></pre></li>
+</ul>
+<h2 id="startdocker.sh-user-configuration"><code>startDocker.sh</code> User Configuration</h2>
+<p>Advanced options can be configured in the <code>userConfig.conf</code> file. This includes:</p>
+<ul>
+<li>Environmental variables to be available in the container.</li>
+<li>Folders to be available in the container.</li>
+<li>Additional arguments to <code>docker run</code>.</li>
+</ul>
+<p>Further even more advanced variables are also availble. Please see the file for extensive documentation.</p>
+<h2 id="usage-instructions">Usage Instructions</h2>
+<h3 id="usage-notes">Usage Notes</h3>
+<ul>
+<li>Only files that are saved in directories that have been made available from your system (for example, your $HOME directory) will be saved once you have exited the Docker container! If you can’t access the file outside of the container, then you it will be lost when you exit!</li>
+</ul>
+<h3 id="cvmfs-instructions">CVMFS Instructions</h3>
+<p>Usage of CVMFS is well documented on <a href="https://dberzano.github.io/alice/install-aliroot/cvmfs/#use_aliroot_from_cvmfs">Dario’s Page</a>. The first line in his instructions (the <code>source</code> command) has already been performed by our ALICE setup script.</p>
+<p>However, there is one undocumented option that is worth noting - the <code>archive</code> option. Archived packages can be used by passing the <code>-a</code> or <code>--archive</code> option to <code>alienv</code>. This allows the use of older packages, including ones that may not be available on the grid.</p>
+<p>Further undocumented options can be found by opening the <code>alienv</code> script, which is located at <code>/cvmfs/alice.cern.ch/bin/alienv</code>. It can be easily accessed by passing <code>$(which alienv)</code> to your favorite text editor. Given that these options are undocumented, they are likely only useful for limited cases.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="general-troubleshooting">General Troubleshooting</h3>
+<ul>
+<li><p>If you run into issue with CMake being unable to find AliRoot, there are two possible solutions:</p>
+<ul>
+<li>Move to the <code>build</code> directory and remove the <code>CMakeFiles</code> directory and <code>CMakeFiles.txt</code>, then run CMake again.</li>
+<li>If that does not work, then the <code>build</code> directory needs to be removed. This means that the entire package needs to be rebuilt.</li>
+</ul></li>
+<li><p>If there are <code>libexpat.so</code> errors, it is related to GEANT. It likely means you have the wrong version! If you run into other issues with <code>cmake</code>, you have two options. You can try to remove <code>CMakeCache.txt</code> and the <code>CMakeFiles</code> folder and try again, but this is not guaranteed to work. Alternatively, you will need to remove the build folder and try again. Note that this will remove any compilation progress that you have made.</p></li>
+</ul>
+<h3 id="mac-os-x-specific-troubleshooting">Mac OS X Specific Troubleshooting</h3>
+<ul>
+<li><p>If you see errors about clock skew in <code>make</code>, you should run make again after your initial <code>make</code> finishes. This is caused by the way that files are shared via <code>nfs</code>. Running make again should update the build in case any files were missed. (In testing, the files that had clock skews did not appear to be source files which would have mattered for the build. They were just configuration files. However, it is still a good idea to pay attention to these types of errors).</p></li>
+<li><p>If you connect to Cisco AnyConnect (ie for the Yale VPN), it will probably break the network routing until you restart. Based on the available information, <a href="https://github.com/boot2docker/boot2docker/issues/628#issuecomment-148961252">this</a> should resolve the issue, but I have not tested it yet. Note that boot2docker is the old name for what we are using now.</p></li>
+</ul>
+<h4 id="docker-machine-nfs-troubleshooting"><code>docker-machine-nfs</code> Troubleshooting</h4>
+<ul>
+<li><p>If <code>docker-machine-nfs</code> has trouble with the <code>/etc/exports</code> file, it can often be solved by (re)moving the file and allowing it to start from scratch. As long as you do not use <code>nfs</code> to share files outside of this process, there are no problems with starting over. To try this approach, backup the file</p>
+<pre><code>$ sudo mv /etc/exports /etc/exports.bak</code></pre>
+<p>Then run <code>./startDocker.sh</code> again. If the issue is resolved and you don’t use <code>nfs</code> elsewhere, you can delete this file. If the issue is not resolved, you can restore the backup if you desire (although a newly generated configuration should be fine, so it is likely not necessary).</p></li>
+<li><p>If you add a directory in <code>userConfig.conf</code> and <code>docker-machine-nfs</code> claims to have mounted it, but it is not accessible in the contianer, then change <code>forceNFSReconfiguration</code> to <code>true</code> in <code>userConfig.conf</code> and try again. Once the issue is resolved, be certain to change it back to <code>false</code>!</p></li>
+</ul>
+<h2 id="technical-details">Technical Details</h2>
+<p>If you are a regular user, you probably do not need to read past here. The section describes the details of how this process works and why decisions were made, so it is only relevant for advanced users.</p>
+<h3 id="startdocker.sh-script"><code>startDocker.sh</code> Script</h3>
+<p>This script was created to vastly simplify all of the setup. Different approaches are required on Linux (normal docker) and Mac OS X (boot2docker + NFS), but this script allows us to use the approach on both systems. The operations that the script preforms are described below.</p>
+<h4 id="tldr">TL;DR</h4>
+<p>These operations are explained below.</p>
+<p>Mac OS X:</p>
+<pre><code>$ docker-machine start default
+$ eval &quot;$(docker-machine env default)&quot;
+# Only if necessary
+$ docker volume create --name cvmfsCache
+$ docker-machine-nfs --shared-folder=&quot;$HOME&quot;
+# Only once every week
+$ docker pull rehlers/alice-cvmfs:latest
+# Will include any additional arguments specified by the user
+$ docker run -it --rm --privileged -v cvmfsCache:/cvmfsCache -e &quot;LOCAL_USER_ID=$(id -u $USER)&quot; rehlers/alice-cvmfs:latest /bin/bash</code></pre>
+<p>Linux:</p>
+<pre><code># Only if necessary
+$ docker volume create --name cvmfsCache
+# Only once every week
+$ docker pull rehlers/alice-cvmfs:latest
+# Will include any additional arguments specified by the user
+$ docker run -it --rm --privileged -v cvmfsCache:/cvmfsCache -e &quot;LOCAL_USER_ID=$(id -u $USER)&quot; rehlers/alice-cvmfs:latest /bin/bash</code></pre>
+<h3 id="script-details">Script Details</h3>
+<h4 id="sharing-files">Sharing Files</h4>
+<h5 id="mac-os-x">Mac OS X</h5>
+<p>We use <code>nfs</code> to share files because VirtualBox or VMWare file sharing is rather slow. <code>docker-machine-nfs</code> shares host files over <code>nfs</code> to the container. This script is very useful because it takes a complicated process and seems to make it very easy.</p>
+<p>Note that <code>nfs</code> maps all files created in the container to the host user’s user id and group, regardless of who or how the file was created.</p>
+<h5 id="linux">Linux</h5>
+<p>Sharing files with the host is natively supported in Docker. However, the user id (uid) of the user in the Docker container does not match that of your user. So any files created in the Docker container would not have the proper permissions. Consequently, we need to change the uid of the container.</p>
+<p>This approach is outline <a href="https://denibertovic.com/posts/handling-permissions-with-docker-volumes/">here</a>. It explains it in detail, but roughly, we pass the uid of the host user to the container, which then creates a new user and switches to it. Note that this process is not required for Mac OS X, since <code>nfs</code> remaps the uid (see above), but it also doesn’t hurt, and it allows for a consistent approach (otherwise we would likely need a different image for each platform).</p>
+<p>Note that in principle user namespaces are perfectly suited for this issue. However, there are a few problems:</p>
+<ol style="list-style-type: decimal">
+<li>User namespaces are not compatible with privileged containers, which are required for the way that CVMFS is currently mounted.</li>
+<li>The sub uids don’t map in the host correctly. So the permissions still seem wrong. For more information, see (for example) <a href="https://stackoverflow.com/q/35291520">here</a>.</li>
+</ol>
+<p>These may be resolved quickly, but they are still very new in Docker as of Feb 2016, so there is not a tremendous amount of information about them yet.</p>
+<h4 id="docker-volume">Docker Volume</h4>
+<p>We want to store the CVMFS data persistently to save time on cached data. This command will store the data persistently in what Docker calls volumes. The CVMFS cache is set to uset at most 16.5 GB (15 GB + 10% for overhead).</p>
+<pre><code># The CVMFS data will be cached so that it will run faster
+$ docker volume create --name cvmfsCache</code></pre>
+<h4 id="docker-pull">Docker Pull</h4>
+<p>This is run weekly.</p>
+<h4 id="docker-run">Docker Run</h4>
+<p>Start the Docker image with <code>docker run</code>. With that command, we mount our cvmfs data cache volume, as well as share the specified folders. Lastly, we tell it the image to use and what to start (namely, a <code>bash</code> shell). <strong>Note that any files that you create inside of the Docker image that are not inside of the specified shared folders will be lost when you exit the Docker image.</strong></p>
+<pre><code># Configure docker
+$ eval &quot;$(docker-machine env default)&quot;
+
+# This is an image that I derived from Dario's base image. It will be being downloaded from Docker Hub
+$ docker run -it --rm --privileged -v cvmfsCache:/cvmfsCache -e &quot;LOCAL_USER_ID=$(id -u $USER)&quot; rehlers/alice-cvmfs:latest /bin/bash</code></pre>
+<p><strong>The prompt should have now changed.</strong> You are now inside of the alice-cvmfs image. Now we must setup CVMFS. You should see a very similar output.</p>
+<p>The options are:</p>
+<ul>
+<li><code>-it</code> makes the container interactive. Otherwise, we would have to access it over ssh, which would be more complicated.</li>
+<li><code>--rm</code> deletes the container when it is exited, which is the Docker convention.</li>
+<li><code>--privileged</code> allows the container to use fuse, which is required to mount directories with CVMFS. This could be avoided by mounting the directories in the host operating system, but this gets messy and would likely be slower on Mac OS X (since it has to mount over <code>nfs</code>), so it is not currently the preferred option.</li>
+<li><code>-v</code> mounts volumes. It is used to mount the CVMFS cache, as well as the host folders.</li>
+<li><code>-e</code> sets a number of variables in the container. <code>$LOCAL_USER_ID</code> must contain the uid of the local user so that using files from the host is configured correctly.</li>
+</ul>
+</body>
+</html>
