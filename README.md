@@ -41,6 +41,8 @@ Mac OS X Specific:
      - [`startDocker.sh` Script](#startdocker.sh-script)
      - [Script Details](#script-details)
 
+--------------------
+
 ## Prerequisites
 
 0. **Make a backup!** Everything should be perfectly fine, but it's a good idea to be safe.
@@ -49,13 +51,13 @@ Mac OS X Specific:
 
 1. `docker-machine`. Install via:
 
-    ```
+    ```bash
     $ brew cask install dockertoolbox
     ```
 
 2. [`docker-machine-nfs`](https://github.com/adlogix/docker-machine-nfs). From the documentation, use:
 
-    ```
+    ```bash
     $ curl -s https://raw.githubusercontent.com/adlogix/docker-machine-nfs/master/docker-machine-nfs.sh |
       sudo tee /usr/local/bin/docker-machine-nfs > /dev/null && \
       sudo chmod +x /usr/local/bin/docker-machine-nfs
@@ -63,7 +65,7 @@ Mac OS X Specific:
 
 3. Create a docker-machine VM named `default`. Note that this will only use the space actually required to store the VM, growing up to 30 GB total. The initial size when everything is setup is approximately 2 GB.
 
-    ```
+    ```bash
     $ docker-machine create --driver virtualbox --virtualbox-disk-size "30000" default
     ```
 
@@ -72,9 +74,11 @@ Mac OS X Specific:
 #### Linux Prerequisites
 1. `docker`. See [here](https://docs.docker.com/linux/step_one/). Roughly, the instructions are to use:
 
-    ```
+    ```bash
     $ curl -fsSL https://get.docker.com/ | sh
     ```
+
+--------------------
 
 ## Pre-Built Packages
 
@@ -84,13 +88,13 @@ The work flow here is to load pre-built package(s) and run them. For example, on
 
 1. Start Docker and make your $HOME directory available to the Docker container. If necessary, other folders can be made available in the [user configuration](#startdocker.sh-user-configuration).
 
-    ```
+    ```bash
     $ ./startDocker.sh
     ```
 
 2. We are now inside of the image, so the prompt should have changed. Now just configure CVMFS:
 
-    ```
+    ```bash
     # Your output should look very similar
     > source setupAliceEnv.sh
     Warning: autofs service is not running
@@ -101,6 +105,8 @@ The work flow here is to load pre-built package(s) and run them. For example, on
     ```
 
 You can now use CVMFS! See the [usage instructions](#usage-instructions). If you need more advanced options, see the [user configuration](#startdocker.sh-user-configuration).
+
+--------------------
 
 ## Compile Your Own Code
 
@@ -116,7 +122,7 @@ These steps only need to be performed once, although steps 2 and 3 will need to 
 
 2. Add the following lines to your `alice-env.conf` file. Note the AliTuple array value (here it is 3) must be continuous within your `alice-env.conf` file.
 
-    ```
+    ```bash
     # Must be run after loading an environment from alienv on CVMFS!
     AliTuple[3]="alien=${ALIEN_RUNTIME_ROOT} \
                  root=${ROOTSYS} \
@@ -127,40 +133,47 @@ These steps only need to be performed once, although steps 2 and 3 will need to 
     ```
 
 3. To ensure that you do not overwrite the build on your local machine, make sure so set a build folder, which in the above example is `dockerMaster` (the AliPhysics version is in parenthesis). To create this folder, run
-```
-$ git-new-workdir "${ALICE_PREFIX}/aliphysics/git" "$(dirname "$ALICE_PHYSICS")/src"
-```
+
+    ```bash
+    $ git-new-workdir "${ALICE_PREFIX}/aliphysics/git" "$(dirname "$ALICE_PHYSICS")/src"
+    ```
 
 ### Compiling Inside of the Docker Container
 
 1. Start Docker and make your $HOME directory available to the Docker container. If necessary, other folders can be made available in the [user configuration](#startdocker.sh-user-configuration).
-```
-$ ./startDocker.sh
-```
+
+    ```bash
+    $ ./startDocker.sh
+    ```
+
 2. We are now inside the image, so the prompt should have changed. Now configure CVMFS. For CVMFS usage information, see [here](#cvmfs-instructions).
-```
-# Your output should look very similar
-$ source setupAliceEnv.sh
-Warning: autofs service is not running
-Warning: failed to use Geo-API with cvmfs.racf.bnl.gov
-CernVM-FS: running with credentials 498:497
-CernVM-FS: loading Fuse module... done
-CernVM-FS: mounted cvmfs on /cvmfs/alice.cern.ch
-$ alienv enter # AliRoot Version
-```
+
+    ```bash
+    # Your output should look very similar
+    $ source setupAliceEnv.sh
+    Warning: autofs service is not running
+    Warning: failed to use Geo-API with cvmfs.racf.bnl.gov
+    CernVM-FS: running with credentials 498:497
+    CernVM-FS: loading Fuse module... done
+    CernVM-FS: mounted cvmfs on /cvmfs/alice.cern.ch
+    $ alienv enter # AliRoot Version
+    ```
+
 3. Setup the ALICE environment.
-```
-$ cd $ALICE_PREFIX
-$ source alice-env.sh
-```
+
+    ```bash
+    $ cd $ALICE_PREFIX
+    $ source alice-env.sh
+    ```
+
 4. Run CMake and compile.
-```
-# Create the directory and move to it
-$ mkdir -p "$(dirname "$ALICE_PHYSICS")/build" && cd "$_"
-# CMake and compile. cmakeCommand is listed below in the useful commands section.
-$ eval $cmakeCommand
-$ make install
-```
+    ```bash
+    # Create the directory and move to it
+    $ mkdir -p "$(dirname "$ALICE_PHYSICS")/build" && cd "$_"
+    # CMake and compile. cmakeCommand is listed below in the useful commands section.
+    $ eval $cmakeCommand
+    $ make install
+    ```
 
 Done! See the [usage instructions](#usage-instructions) and the [useful commands](#useful-commands) section below. If you need more advanced options, see the [user configuration](#startdocker.sh-user-configuration).
 
@@ -170,19 +183,26 @@ A number of variable are defined in the container for convenience. Additional va
 
  - `$ALICE_PREFIX` is set if you loaded the ALICE environment on your local machine before running the `startDocker.sh` script. Otherwise, it automatically be set to "$HOME/alicesw", as `$ALICE_PREFIX`is often set to this value.
  - `$cmakeCommand` is set to the cmake command for AliPhysics so that you do not need to copy and paste. Use it with `eval $cmakeCommand`. The specific command (as of Feb 2016) is
-```
-cmake "$(dirname "$ALICE_PHYSICS")/src" -DCMAKE_INSTALL_PREFIX="$ALICE_PHYSICS" -DCMAKE_C_COMPILER=`root-config --cc` -DCMAKE_CXX_COMPILER=`root-config --cxx` -DCMAKE_Fortran_COMPILER=`root-config --f77` -DALIEN="$ALIEN_DIR" -DROOTSYS="$ROOTSYS" -DFASTJET="$FASTJET" -DCGAL="$CGAL_ROOT" -DALIROOT="$ALICE_ROOT" -DCMAKE_BUILD_TYPE=RELWITHDEBINFO 
-```
+
+    ```bash
+    cmake "$(dirname "$ALICE_PHYSICS")/src" -DCMAKE_INSTALL_PREFIX="$ALICE_PHYSICS" -DCMAKE_C_COMPILER=`root-config --cc` -DCMAKE_CXX_COMPILER=`root-config --cxx` -DCMAKE_Fortran_COMPILER=`root-config --f77` -DALIEN="$ALIEN_DIR" -DROOTSYS="$ROOTSYS" -DFASTJET="$FASTJET" -DCGAL="$CGAL_ROOT" -DALIROOT="$ALICE_ROOT" -DCMAKE_BUILD_TYPE=RELWITHDEBINFO 
+    ```
+
+--------------------
 
 ## `startDocker.sh` User Configuration
 
-Advanced options can be configured in the `userConfig.conf` file. This includes:
+Advanced options can be configured in the `userConfig.conf` file, which is automatically created by the `startDocker.sh` script from the stub. This includes:
 
 - Environmental variables to be available in the container.
 - Folders to be available in the container.
 - Additional arguments to `docker run`.
 
-Further even more advanced variables are also availble. Please see the file for extensive documentation.
+If you have never run the `startDocker.sh` script, then the `userConfig.conf` file will not yet exist. Either run the script once, or make a copy of the stub yourself. Then you can customize it.
+
+Further even more advanced variables are also available. Please see the file for extensive documentation.
+
+--------------------
 
 ## Usage Instructions
 
@@ -197,6 +217,8 @@ Usage of CVMFS is well documented on [Dario's Page](https://dberzano.github.io/a
 However, there is one undocumented option that is worth noting - the `archive` option. Archived packages can be used by passing the `-a` or `--archive` option to `alienv`. This allows the use of older packages, including ones that may not be available on the grid.
 
 Further undocumented options can be found by opening the `alienv` script, which is located at `/cvmfs/alice.cern.ch/bin/alienv`. It can be easily accessed by passing `$(which alienv)` to your favorite text editor. Given that these options are undocumented, they are likely only useful for limited cases.
+
+--------------------
 
 ## Troubleshooting
 
@@ -215,11 +237,16 @@ Further undocumented options can be found by opening the `alienv` script, which 
 #### `docker-machine-nfs` Troubleshooting
 
  - If `docker-machine-nfs` has trouble with the `/etc/exports` file, it can often be solved by (re)moving the file and allowing it to start from scratch. As long as you do not use `nfs` to share files outside of this process, there are no problems with starting over. To try this approach, backup the file
-```
-$ sudo mv /etc/exports /etc/exports.bak
-```
-   Then run `./startDocker.sh` again. If the issue is resolved and you don't use `nfs` elsewhere, you can delete this file. If the issue is not resolved, you can restore the backup if you desire (although a newly generated configuration should be fine, so it is likely not necessary).
+
+    ```bash
+    $ sudo mv /etc/exports /etc/exports.bak
+    ```
+
+    Then run `./startDocker.sh` again. If the issue is resolved and you don't use `nfs` elsewhere, you can delete this file. If the issue is not resolved, you can restore the backup if you desire (although a newly generated configuration should be fine, so it is likely not necessary).
+
  - If you add a directory in `userConfig.conf` and `docker-machine-nfs` claims to have mounted it, but it is not accessible in the contianer, then change `forceNFSReconfiguration` to `true` in `userConfig.conf` and try again. Once the issue is resolved, be certain to change it back to `false`!
+
+--------------------
 
 ## Technical Details
 
@@ -234,7 +261,7 @@ This script was created to vastly simplify all of the setup. Different approache
 These operations are explained below.
 
 Mac OS X:
-```
+```bash
 $ docker-machine start default
 $ eval "$(docker-machine env default)"
 # Only if necessary
@@ -247,7 +274,7 @@ $ docker run -it --rm --privileged -v cvmfsCache:/cvmfsCache -e "LOCAL_USER_ID=$
 ```
 
 Linux: 
-```
+```bash
 # Only if necessary
 $ docker volume create --name cvmfsCache
 # Only once every week
@@ -283,25 +310,24 @@ These may be resolved quickly, but they are still very new in Docker as of Feb 2
 
 We want to store the CVMFS data persistently to save time on cached data. This command will store the data persistently in what Docker calls volumes. The CVMFS cache is set to uset at most 16.5 GB (15 GB + 10% for overhead).
 
-```
+```bash
 # The CVMFS data will be cached so that it will run faster
 $ docker volume create --name cvmfsCache
 ```
 
 #### Docker Pull
 
-By default, the image would never be updated. The script stores when it last checked for images and then checks approximately weekly. This ensure that any changes that are pushed to the image are distributed in a timely manner.
+By default, the image would never be updated. The `startDocker.sh` script stores when it last checked for images and then checks approximately a week later. This ensure that any changes that are pushed to the image are distributed in a timely manner.
 
-It runs
-```
+```bash
 $ docker pull rehlers/alice-cvmfs:latest
 ```
 
 #### Docker Run
 
-Start the Docker image with `docker run`. With that command, we mount our cvmfs data cache volume, as well as share the specified folders. Lastly, we tell it the image to use and what to start (namely, a `bash` shell). **Note that any files that you create inside of the Docker image that are not inside of the specified shared folders will be lost when you exit the Docker image.**
+Start the Docker image with `docker run`. With that command, we mount our CVMFS data cache volume, as well as share the specified folders with the container. Lastly, we tell it the image to use and what to start (namely, a `bash` shell). **Note that any files that you create inside of the Docker image that are not inside of the specified shared folders will be lost when you exit the Docker image.**
 
-```
+```bash
 # Configure docker
 $ eval "$(docker-machine env default)"
 $ docker run -it --rm --privileged -v cvmfsCache:/cvmfsCache -e "LOCAL_USER_ID=$(id -u $USER)" rehlers/alice-cvmfs:latest /bin/bash
@@ -315,4 +341,4 @@ The options are:
  - `-v` mounts volumes. It is used to mount the CVMFS cache, as well as the host folders.
  - `-e` sets a number of variables in the container. `$LOCAL_USER_ID` must contain the uid of the local user so that using files from the host is configured correctly.
 
-The image is derived from the Dario's aliSW Scientific Linux 6 image used on the build servers. A number of pieces of software are added and updates are applied. It is extremely likely that the image could be substantially shrunk if someone was willing to put in the time. However, it does not seem worthwhile at the moment.
+[The image](https://hub.docker.com/r/rehlers/alice-cvmfs/) is derived from the Dario's [aliSW Scientific Linux 6 image](https://hub.docker.com/r/alisw/slc6-builder/) used on the build servers. A number of pieces of software are added and updates are applied. It is extremely likely that the image could be substantially shrunk if someone was willing to put in the time. However, it does not seem worthwhile at the moment.
