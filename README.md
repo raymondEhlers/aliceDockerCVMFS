@@ -51,19 +51,16 @@ Mac OS X Specific:
 ```
 $ brew cask install dockertoolbox
 ```
-
 2. [`docker-machine-nfs`](https://github.com/adlogix/docker-machine-nfs). From the documentation, use:
 ```
 $ curl -s https://raw.githubusercontent.com/adlogix/docker-machine-nfs/master/docker-machine-nfs.sh |
   sudo tee /usr/local/bin/docker-machine-nfs > /dev/null && \
   sudo chmod +x /usr/local/bin/docker-machine-nfs
 ```
-
 3. Create a docker-machine VM named `default`. Note that this will only use the space actually required to store the VM, growing up to 30 GB total. The initial size when everything is setup is approximately 2 GB.
 ```
 $ docker-machine create --driver virtualbox --virtualbox-disk-size "30000" default
 ```
-
 4. (Recommended) Remove Docker files from Time Machine. These files change very frequently and are very easy to recreate. Go to the Time Machine settings, click options, and then exclude `~/.docker/machine/machines`. When adding the folder, you may need to click on options to show hidden files.
 
 #### Linux Prerequisites
@@ -77,12 +74,10 @@ $ curl -fsSL https://get.docker.com/ | sh
 The work flow here is to load pre-built package(s) and run them. For example, one could download a test train, load the tag via CVMFS, and then test the train against that tag. You could also build against the packages if you have code that depends on AliRoot or AliPhysics (for building AliPhysics, see [below](#compile-your-own-code)).
 
 0. Install the [prerequisites](#prerequisites) for your platform.
-
 1. Start Docker and make your $HOME directory available to the Docker container. If necessary, other folders can be made available in the [user configuration](#startdocker.sh-user-configuration).
 ```
 $ ./startDocker.sh
 ```
-
 2. We are now inside of the image, so the prompt should have changed. Now just configure CVMFS:
 ```
 # Your output should look very similar
@@ -107,8 +102,7 @@ Note: If your code is stand-alone from packages (ie. If it is not contained in a
 These steps only need to be performed once, although steps 2 and 3 will need to be edited if you are using a different AliPhysics version or repeated if you change AliPhysics versions.
 
 1. Install AliPhysics and all prerequisites on your system. Use Dario's instructions.
-
-2. Add the following lines to your `alice-env.conf` file.
+2. Add the following lines to your `alice-env.conf` file. Note the AliTuple array value (here it is 3) must be continuous within your `alice-env.conf` file.
 ```
 # Must be run after loading an environment from alienv on CVMFS!
 AliTuple[3]="alien=${ALIEN_RUNTIME_ROOT} \
@@ -118,9 +112,6 @@ AliTuple[3]="alien=${ALIEN_RUNTIME_ROOT} \
              aliroot=${ALICE_ROOT} \
              aliphysics=dockerMaster(master)"
 ```
-
-Also note the AliTuple array value (here it is 3) must be continuous within your `alice-env.conf` file.
-
 3. To ensure that you do not overwrite the build on your local machine, make sure so set a build folder, which in the above example is `dockerMaster` (the AliPhysics version is in parenthesis). To create this folder, run
 ```
 $ git-new-workdir "${ALICE_PREFIX}/aliphysics/git" "$(dirname "$ALICE_PHYSICS")/src"
@@ -132,7 +123,6 @@ $ git-new-workdir "${ALICE_PREFIX}/aliphysics/git" "$(dirname "$ALICE_PHYSICS")/
 ```
 $ ./startDocker.sh
 ```
-
 2. We are now inside the image, so the prompt should have changed. Now configure CVMFS. For CVMFS usage information, see [here](#cvmfs-instructions).
 ```
 # Your output should look very similar
@@ -144,13 +134,11 @@ CernVM-FS: loading Fuse module... done
 CernVM-FS: mounted cvmfs on /cvmfs/alice.cern.ch
 $ alienv enter # AliRoot Version
 ```
-
 3. Setup the ALICE environment.
 ```
 $ cd $ALICE_PREFIX
 $ source alice-env.sh
 ```
-
 4. Run CMake and compile.
 ```
 # Create the directory and move to it
@@ -201,16 +189,13 @@ Further undocumented options can be found by opening the `alienv` script, which 
 ### General Troubleshooting
 
  - If you run into issue with CMake being unable to find AliRoot, there are two possible solutions:
-     
      - Move to the `build` directory and remove the `CMakeFiles` directory and `CMakeFiles.txt`, then run CMake again.
      - If that does not work, then the `build` directory needs to be removed. This means that the entire package needs to be rebuilt.
- 
  - If there are `libexpat.so` errors, it is related to GEANT. It likely means you have the wrong version! If you run into other issues with `cmake`, you have two options. You can try to remove `CMakeCache.txt` and the `CMakeFiles` folder and try again, but this is not guaranteed to work. Alternatively, you will need to remove the build folder and try again. Note that this will remove any compilation progress that you have made.
 
 ### Mac OS X Specific Troubleshooting
 
  - If you see errors about clock skew in `make`, you should run make again after your initial `make` finishes. This is caused by the way that files are shared via `nfs`. Running make again should update the build in case any files were missed. (In testing, the files that had clock skews did not appear to be source files which would have mattered for the build. They were just configuration files. However, it is still a good idea to pay attention to these types of errors).
- 
  - If you connect to Cisco AnyConnect (ie for the Yale VPN), it will probably break the network routing until you restart. Based on the available information, [this](https://github.com/boot2docker/boot2docker/issues/628#issuecomment-148961252) should resolve the issue, but I have not tested it yet. Note that boot2docker is the old name for what we are using now.
 
 #### `docker-machine-nfs` Troubleshooting
@@ -219,8 +204,7 @@ Further undocumented options can be found by opening the `alienv` script, which 
 ```
 $ sudo mv /etc/exports /etc/exports.bak
 ```
-Then run `./startDocker.sh` again. If the issue is resolved and you don't use `nfs` elsewhere, you can delete this file. If the issue is not resolved, you can restore the backup if you desire (although a newly generated configuration should be fine, so it is likely not necessary).
-
+   Then run `./startDocker.sh` again. If the issue is resolved and you don't use `nfs` elsewhere, you can delete this file. If the issue is not resolved, you can restore the backup if you desire (although a newly generated configuration should be fine, so it is likely not necessary).
  - If you add a directory in `userConfig.conf` and `docker-machine-nfs` claims to have mounted it, but it is not accessible in the contianer, then change `forceNFSReconfiguration` to `true` in `userConfig.conf` and try again. Once the issue is resolved, be certain to change it back to `false`!
 
 ## Technical Details
@@ -292,7 +276,12 @@ $ docker volume create --name cvmfsCache
 
 #### Docker Pull
 
-This is run weekly.
+By default, the image would never be updated. The script stores when it last checked for images and then checks approximately weekly. This ensure that any changes that are pushed to the image are distributed in a timely manner.
+
+It runs
+```
+$ docker pull rehlers/alice-cvmfs:latest
+```
 
 #### Docker Run
 
@@ -301,12 +290,8 @@ Start the Docker image with `docker run`. With that command, we mount our cvmfs 
 ```
 # Configure docker
 $ eval "$(docker-machine env default)"
-
-# This is an image that I derived from Dario's base image. It will be being downloaded from Docker Hub
 $ docker run -it --rm --privileged -v cvmfsCache:/cvmfsCache -e "LOCAL_USER_ID=$(id -u $USER)" rehlers/alice-cvmfs:latest /bin/bash
 ```
-
-**The prompt should have now changed.** You are now inside of the alice-cvmfs image. Now we must setup CVMFS. You should see a very similar output.
 
 The options are:
 
@@ -316,3 +301,4 @@ The options are:
  - `-v` mounts volumes. It is used to mount the CVMFS cache, as well as the host folders.
  - `-e` sets a number of variables in the container. `$LOCAL_USER_ID` must contain the uid of the local user so that using files from the host is configured correctly.
 
+The image is derived from the Dario's aliSW Scientific Linux 6 image used on the build servers. A number of pieces of software are added and updates are applied. It is extremely likely that the image could be substantially shrunk if someone was willing to put in the time. However, it does not seem worthwhile at the moment.

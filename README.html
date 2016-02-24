@@ -81,7 +81,7 @@
 <h2 id="pre-built-packages">Pre-Built Packages</h2>
 <p>The work flow here is to load pre-built package(s) and run them. For example, one could download a test train, load the tag via CVMFS, and then test the train against that tag. You could also build against the packages if you have code that depends on AliRoot or AliPhysics (for building AliPhysics, see <a href="#compile-your-own-code">below</a>).</p>
 <ol start="0" style="list-style-type: decimal">
-<li><p>Install the <a href="#prerequisites">prerequisites</a> for your platform.</p></li>
+<li>Install the <a href="#prerequisites">prerequisites</a> for your platform.</li>
 <li><p>Start Docker and make your $HOME directory available to the Docker container. If necessary, other folders can be made available in the <a href="#startdocker.sh-user-configuration">user configuration</a>.</p>
 <pre><code>$ ./startDocker.sh</code></pre></li>
 <li><p>We are now inside of the image, so the prompt should have changed. Now just configure CVMFS:</p>
@@ -100,8 +100,8 @@ CernVM-FS: mounted cvmfs on /cvmfs/alice.cern.ch</code></pre></li>
 <h3 id="setup-aliphysics-and-the-alice-environment">Setup AliPhysics and the ALICE environment</h3>
 <p>These steps only need to be performed once, although steps 2 and 3 will need to be edited if you are using a different AliPhysics version or repeated if you change AliPhysics versions.</p>
 <ol style="list-style-type: decimal">
-<li><p>Install AliPhysics and all prerequisites on your system. Use Dario’s instructions.</p></li>
-<li><p>Add the following lines to your <code>alice-env.conf</code> file.</p>
+<li>Install AliPhysics and all prerequisites on your system. Use Dario’s instructions.</li>
+<li><p>Add the following lines to your <code>alice-env.conf</code> file. Note the AliTuple array value (here it is 3) must be continuous within your <code>alice-env.conf</code> file.</p>
 <pre><code># Must be run after loading an environment from alienv on CVMFS!
 AliTuple[3]=&quot;alien=${ALIEN_RUNTIME_ROOT} \
          root=${ROOTSYS} \
@@ -109,9 +109,6 @@ AliTuple[3]=&quot;alien=${ALIEN_RUNTIME_ROOT} \
          geant3=${GEANT3_ROOT} \
          aliroot=${ALICE_ROOT} \
          aliphysics=dockerMaster(master)&quot;</code></pre></li>
-</ol>
-<p>Also note the AliTuple array value (here it is 3) must be continuous within your <code>alice-env.conf</code> file.</p>
-<ol start="3" style="list-style-type: decimal">
 <li><p>To ensure that you do not overwrite the build on your local machine, make sure so set a build folder, which in the above example is <code>dockerMaster</code> (the AliPhysics version is in parenthesis). To create this folder, run</p>
 <pre><code>$ git-new-workdir &quot;${ALICE_PREFIX}/aliphysics/git&quot; &quot;$(dirname &quot;$ALICE_PHYSICS&quot;)/src&quot;</code></pre></li>
 </ol>
@@ -166,23 +163,23 @@ $ make install</code></pre></li>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <h3 id="general-troubleshooting">General Troubleshooting</h3>
 <ul>
-<li><p>If you run into issue with CMake being unable to find AliRoot, there are two possible solutions:</p>
+<li>If you run into issue with CMake being unable to find AliRoot, there are two possible solutions:
 <ul>
 <li>Move to the <code>build</code> directory and remove the <code>CMakeFiles</code> directory and <code>CMakeFiles.txt</code>, then run CMake again.</li>
 <li>If that does not work, then the <code>build</code> directory needs to be removed. This means that the entire package needs to be rebuilt.</li>
 </ul></li>
-<li><p>If there are <code>libexpat.so</code> errors, it is related to GEANT. It likely means you have the wrong version! If you run into other issues with <code>cmake</code>, you have two options. You can try to remove <code>CMakeCache.txt</code> and the <code>CMakeFiles</code> folder and try again, but this is not guaranteed to work. Alternatively, you will need to remove the build folder and try again. Note that this will remove any compilation progress that you have made.</p></li>
+<li>If there are <code>libexpat.so</code> errors, it is related to GEANT. It likely means you have the wrong version! If you run into other issues with <code>cmake</code>, you have two options. You can try to remove <code>CMakeCache.txt</code> and the <code>CMakeFiles</code> folder and try again, but this is not guaranteed to work. Alternatively, you will need to remove the build folder and try again. Note that this will remove any compilation progress that you have made.</li>
 </ul>
 <h3 id="mac-os-x-specific-troubleshooting">Mac OS X Specific Troubleshooting</h3>
 <ul>
-<li><p>If you see errors about clock skew in <code>make</code>, you should run make again after your initial <code>make</code> finishes. This is caused by the way that files are shared via <code>nfs</code>. Running make again should update the build in case any files were missed. (In testing, the files that had clock skews did not appear to be source files which would have mattered for the build. They were just configuration files. However, it is still a good idea to pay attention to these types of errors).</p></li>
-<li><p>If you connect to Cisco AnyConnect (ie for the Yale VPN), it will probably break the network routing until you restart. Based on the available information, <a href="https://github.com/boot2docker/boot2docker/issues/628#issuecomment-148961252">this</a> should resolve the issue, but I have not tested it yet. Note that boot2docker is the old name for what we are using now.</p></li>
+<li>If you see errors about clock skew in <code>make</code>, you should run make again after your initial <code>make</code> finishes. This is caused by the way that files are shared via <code>nfs</code>. Running make again should update the build in case any files were missed. (In testing, the files that had clock skews did not appear to be source files which would have mattered for the build. They were just configuration files. However, it is still a good idea to pay attention to these types of errors).</li>
+<li>If you connect to Cisco AnyConnect (ie for the Yale VPN), it will probably break the network routing until you restart. Based on the available information, <a href="https://github.com/boot2docker/boot2docker/issues/628#issuecomment-148961252">this</a> should resolve the issue, but I have not tested it yet. Note that boot2docker is the old name for what we are using now.</li>
 </ul>
 <h4 id="docker-machine-nfs-troubleshooting"><code>docker-machine-nfs</code> Troubleshooting</h4>
 <ul>
 <li><p>If <code>docker-machine-nfs</code> has trouble with the <code>/etc/exports</code> file, it can often be solved by (re)moving the file and allowing it to start from scratch. As long as you do not use <code>nfs</code> to share files outside of this process, there are no problems with starting over. To try this approach, backup the file</p>
 <pre><code>$ sudo mv /etc/exports /etc/exports.bak</code></pre>
-<p>Then run <code>./startDocker.sh</code> again. If the issue is resolved and you don’t use <code>nfs</code> elsewhere, you can delete this file. If the issue is not resolved, you can restore the backup if you desire (although a newly generated configuration should be fine, so it is likely not necessary).</p></li>
+Then run <code>./startDocker.sh</code> again. If the issue is resolved and you don’t use <code>nfs</code> elsewhere, you can delete this file. If the issue is not resolved, you can restore the backup if you desire (although a newly generated configuration should be fine, so it is likely not necessary).</li>
 <li><p>If you add a directory in <code>userConfig.conf</code> and <code>docker-machine-nfs</code> claims to have mounted it, but it is not accessible in the contianer, then change <code>forceNFSReconfiguration</code> to <code>true</code> in <code>userConfig.conf</code> and try again. Once the issue is resolved, be certain to change it back to <code>false</code>!</p></li>
 </ul>
 <h2 id="technical-details">Technical Details</h2>
@@ -227,15 +224,14 @@ $ docker run -it --rm --privileged -v cvmfsCache:/cvmfsCache -e &quot;LOCAL_USER
 <pre><code># The CVMFS data will be cached so that it will run faster
 $ docker volume create --name cvmfsCache</code></pre>
 <h4 id="docker-pull">Docker Pull</h4>
-<p>This is run weekly.</p>
+<p>By default, the image would never be updated. The script stores when it last checked for images and then checks approximately weekly. This ensure that any changes that are pushed to the image are distributed in a timely manner.</p>
+<p>It runs</p>
+<pre><code>$ docker pull rehlers/alice-cvmfs:latest</code></pre>
 <h4 id="docker-run">Docker Run</h4>
 <p>Start the Docker image with <code>docker run</code>. With that command, we mount our cvmfs data cache volume, as well as share the specified folders. Lastly, we tell it the image to use and what to start (namely, a <code>bash</code> shell). <strong>Note that any files that you create inside of the Docker image that are not inside of the specified shared folders will be lost when you exit the Docker image.</strong></p>
 <pre><code># Configure docker
 $ eval &quot;$(docker-machine env default)&quot;
-
-# This is an image that I derived from Dario's base image. It will be being downloaded from Docker Hub
 $ docker run -it --rm --privileged -v cvmfsCache:/cvmfsCache -e &quot;LOCAL_USER_ID=$(id -u $USER)&quot; rehlers/alice-cvmfs:latest /bin/bash</code></pre>
-<p><strong>The prompt should have now changed.</strong> You are now inside of the alice-cvmfs image. Now we must setup CVMFS. You should see a very similar output.</p>
 <p>The options are:</p>
 <ul>
 <li><code>-it</code> makes the container interactive. Otherwise, we would have to access it over ssh, which would be more complicated.</li>
@@ -244,5 +240,6 @@ $ docker run -it --rm --privileged -v cvmfsCache:/cvmfsCache -e &quot;LOCAL_USER
 <li><code>-v</code> mounts volumes. It is used to mount the CVMFS cache, as well as the host folders.</li>
 <li><code>-e</code> sets a number of variables in the container. <code>$LOCAL_USER_ID</code> must contain the uid of the local user so that using files from the host is configured correctly.</li>
 </ul>
+<p>The image is derived from the Dario’s aliSW Scientific Linux 6 image used on the build servers. A number of pieces of software are added and updates are applied. It is extremely likely that the image could be substantially shrunk if someone was willing to put in the time. However, it does not seem worthwhile at the moment.</p>
 </body>
 </html>
