@@ -1,4 +1,4 @@
-# ALICE CVMFS Instructions
+# ALICE Docker CVMFS Instructions
 
 By: Raymond Ehlers (raymond.ehlers@yale.edu), Yale RHIG, Feb 2016. Thanks to James Mulligan, Salvatore Aiola, and Eliane Epple for suggestions and help in testing out the scripts and instructions.
 
@@ -63,7 +63,7 @@ Mac OS X Specific:
       sudo chmod +x /usr/local/bin/docker-machine-nfs
     ```
 
-3. Create a docker-machine VM named `default`. Note that this will only use the space actually required to store the VM, growing up to 30 GB total. The initial size when everything is setup is approximately 2 GB.
+3. Create a docker-machine VM named `default` (`default` is the standard name in the docker-machine universe). Note that the initial size when everything is setup is approximately 2 GB. The VM will only use the space actually required to store the VM, growing up to 30 GB total. 
 
     ```bash
     $ docker-machine create --driver virtualbox --virtualbox-disk-size "30000" default
@@ -224,14 +224,17 @@ Further undocumented options can be found by opening the `alienv` script, which 
 
 ### General Troubleshooting
 
+ - X11 is not connected to the container. Consequently, if you just run `root`, it will complain about being unable to use X11. Instead, you need to pass it the "batch mode without graphics" option (ie `root -b`).
  - If you run into issue with CMake being unable to find AliRoot, there are two possible solutions:
      - Move to the `build` directory and remove the `CMakeFiles` directory and `CMakeFiles.txt`, then run CMake again.
      - If that does not work, then the `build` directory needs to be removed. This means that the entire package needs to be rebuilt.
+
  - If there are `libexpat.so` errors, it is related to GEANT. It likely means you have the wrong version! If you run into other issues with `cmake`, you have two options. You can try to remove `CMakeCache.txt` and the `CMakeFiles` folder and try again, but this is not guaranteed to work. Alternatively, you will need to remove the build folder and try again. Note that this will remove any compilation progress that you have made.
 
 ### Mac OS X Specific Troubleshooting
 
  - If you see errors about clock skew in `make`, you should run make again after your initial `make` finishes. This is caused by the way that files are shared via `nfs`. Running make again should update the build in case any files were missed. (In testing, the files that had clock skews did not appear to be source files which would have mattered for the build. They were just configuration files. However, it is still a good idea to pay attention to these types of errors).
+
  - If you connect to Cisco AnyConnect (ie for the Yale VPN), it will probably break the network routing until you restart. Based on the available information, [this](https://github.com/boot2docker/boot2docker/issues/628#issuecomment-148961252) should resolve the issue, but I have not tested it yet. Note that boot2docker is the old name for what we are using now.
 
 #### `docker-machine-nfs` Troubleshooting
