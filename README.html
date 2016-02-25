@@ -107,7 +107,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">curl</span> -s https://raw.githubusercontent.com/adlogix/docker-machine-nfs/master/docker-machine-nfs.sh <span class="kw">|</span>
   <span class="kw">sudo</span> tee /usr/local/bin/docker-machine-nfs <span class="kw">&gt;</span> /dev/null <span class="kw">&amp;&amp;</span> <span class="kw">\</span>
   <span class="kw">sudo</span> chmod +x /usr/local/bin/docker-machine-nfs</code></pre></div></li>
-<li><p>Create a docker-machine VM named <code>default</code>. Note that this will only use the space actually required to store the VM, growing up to 30 GB total. The initial size when everything is setup is approximately 2 GB.</p>
+<li><p>Create a docker-machine VM named <code>default</code> (<code>default</code> is the standard name in the docker-machine universe). Note that the initial size when everything is setup is approximately 2 GB. The VM will only use the space actually required to store the VM, growing up to 30 GB total.</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">docker-machine</span> create --driver virtualbox --virtualbox-disk-size <span class="st">&quot;30000&quot;</span> default</code></pre></div></li>
 <li><p>(Recommended) Remove Docker files from Time Machine. These files change very frequently and are very easy to recreate. Go to the Time Machine settings, click options, and then exclude <code>~/.docker/machine/machines</code>. When adding the folder, you may need to click on options to show hidden files.</p></li>
 </ol>
@@ -149,8 +149,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="st">             geant3=</span><span class="ot">${GEANT3_ROOT}</span><span class="st"> \</span>
 <span class="st">             aliroot=</span><span class="ot">${ALICE_ROOT}</span><span class="st"> \</span>
 <span class="st">             aliphysics=dockerMaster(master)&quot;</span></code></pre></div></li>
-<li><p>To ensure that you do not overwrite the build on your local machine, make sure so set a build folder, which in the above example is <code>dockerMaster</code> (the AliPhysics version is in parenthesis). To create this folder, run</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git-new-workdir</span> <span class="st">&quot;</span><span class="ot">${ALICE_PREFIX}</span><span class="st">/aliphysics/git&quot;</span> <span class="st">&quot;</span><span class="ot">$(</span><span class="kw">dirname</span> <span class="st">&quot;</span><span class="ot">$ALICE_PHYSICS</span><span class="st">&quot;</span><span class="ot">)</span><span class="st">/src&quot;</span></code></pre></div></li>
+<li><p>To ensure that you do not overwrite the build on your local machine, make sure to set a build folder, which in the above example is <code>dockerMaster</code> (the AliPhysics version is in parenthesis - in the above example, it is <code>master</code>). To create this folder, load the tuple you just added to <code>alice-env-.conf</code> and then run</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Only run this if you have sourced alice-env.sh!!</span>
+$ <span class="kw">git-new-workdir</span> <span class="st">&quot;</span><span class="ot">${ALICE_PREFIX}</span><span class="st">/aliphysics/git&quot;</span> <span class="st">&quot;</span><span class="ot">$(</span><span class="kw">dirname</span> <span class="st">&quot;</span><span class="ot">$ALICE_PHYSICS</span><span class="st">&quot;</span><span class="ot">)</span><span class="st">/src&quot;</span></code></pre></div></li>
 </ol>
 <h3 id="compiling-inside-of-the-docker-container">Compiling Inside of the Docker Container</h3>
 <ol style="list-style-type: decimal">

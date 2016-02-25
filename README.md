@@ -132,9 +132,10 @@ These steps only need to be performed once, although steps 2 and 3 will need to 
                  aliphysics=dockerMaster(master)"
     ```
 
-3. To ensure that you do not overwrite the build on your local machine, make sure so set a build folder, which in the above example is `dockerMaster` (the AliPhysics version is in parenthesis). To create this folder, run
+3. To ensure that you do not overwrite the build on your local machine, make sure to set a build folder, which in the above example is named `dockerMaster` (the AliPhysics version is in parenthesis - in the above example, it is `master`). To create this folder, load the tuple you added to `alice-env-.conf` and then run
 
     ```bash
+    # Only run this if you have sourced alice-env.sh!!
     $ git-new-workdir "${ALICE_PREFIX}/aliphysics/git" "$(dirname "$ALICE_PHYSICS")/src"
     ```
 
