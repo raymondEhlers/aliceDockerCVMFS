@@ -110,7 +110,7 @@ You can now use CVMFS! See the [usage instructions](#usage-instructions). If you
 
 ## Compile Your Own Code
 
-The work flow here is that you develop in your normal install of AliPhysics on your system (ie that you installed via the automatic or manual installation instructions). Once you are done developing, you load all of the dependencies in CVMFS, compile in the Docker container, and then you work as normal (test, run over data, etc). If you need to make changes to your code, you can edit the file either in 
+The work flow here is that you develop in your normal install of AliPhysics on your system (ie that you installed via the automatic or manual installation instructions). Once you are done developing, you load all of the dependencies in CVMFS, compile in the Docker container, and then you work as normal (test, run over data, etc). If you need to make changes to your code, you can edit the file either on the host (your Mac OS X or Linux machine) or inside of the container - 
 
 Note: If your code is stand-alone from packages (ie. If it is not contained in a package, such that you would need to recompile it), then you can just use the method [above](#pre-built-packages).
 
@@ -141,6 +141,8 @@ These steps only need to be performed once, although steps 2 and 3 will need to 
 
 ### Compiling Inside of the Docker Container
 
+0. Follow the instructions [above](#setup-aliphysics-and-the-alice-environment) regarding setting up AliPHysics and the ALICE environment!
+
 1. Start Docker and make your $HOME directory available to the Docker container. If necessary, other folders can be made available in the [user configuration](#startdocker.sh-user-configuration).
 
     ```bash
@@ -160,7 +162,7 @@ These steps only need to be performed once, although steps 2 and 3 will need to 
     $ alienv enter # AliRoot Version
     ```
 
-3. Setup the ALICE environment.
+3. Setup the ALICE environment. Be certain to load the tuple that you setup above!!
 
     ```bash
     $ cd $ALICE_PREFIX
@@ -168,15 +170,19 @@ These steps only need to be performed once, although steps 2 and 3 will need to 
     ```
 
 4. Run CMake and compile.
+
     ```bash
     # Create the directory and move to it
     $ mkdir -p "$(dirname "$ALICE_PHYSICS")/build" && cd "$_"
     # CMake and compile. cmakeCommand is listed below in the useful commands section.
+    # It does not need to be run every time - only when appropriate!
     $ eval $cmakeCommand
     $ make install
     ```
 
-Done! See the [usage instructions](#usage-instructions) and the [useful commands](#useful-commands) section below. If you need more advanced options, see the [user configuration](#startdocker.sh-user-configuration).
+5. AliPhysics is now setup and configured. As you develop further code, you will need to return to the `build` directory and re-run `make install`. For more information on this type of work flow, see [here](https://dberzano.github.io/alice/install-aliroot/manual/#build_to_test_your_local_changes).
+
+Done! See the [usage instructions](#usage-instructions) and the [useful commands](#useful-commands) sections below. If you need more advanced options, see the [user configuration](#startdocker.sh-user-configuration).
 
 ### Useful Commands
 
@@ -211,6 +217,13 @@ Further even more advanced variables are also available. Please see the file for
 
 - Only files that are saved in directories that have been made available from your system (for example, your $HOME directory) will be saved once you have exited the Docker container! If you can't access the file outside of the container, then you it will be lost when you exit!
 
+- A few aliases are defined for convenience. They are:
+
+    ```bash
+    $ lsl -> "ls -lhXF --color=auto"
+    $ lsa -> "ls -lhXFa --color=auto" # Same as lsl, but includes all files.
+    ```
+
 ### CVMFS Instructions
 
 Usage of CVMFS is well documented on [Dario's Page](https://dberzano.github.io/alice/install-aliroot/cvmfs/#use_aliroot_from_cvmfs). The first line in his instructions (the `source` command) has already been performed by our ALICE setup script.
@@ -232,7 +245,13 @@ Further undocumented options can be found by opening the `alienv` script, which 
 
  - If there are `libexpat.so` errors, it is related to GEANT. It likely means you have the wrong version! If you run into other issues with `cmake`, you have two options. You can try to remove `CMakeCache.txt` and the `CMakeFiles` folder and try again, but this is not guaranteed to work. Alternatively, you will need to remove the build folder and try again. Note that this will remove any compilation progress that you have made.
 
+ - Errors related to `CGAL` are often related to the `CGAL` library not being loaded correctly. If it fails to load, check to ensure that the associated variable, `$CGAL_ROOT` (or `$CGAL` for older packages), is defined. If the variable is defined, then the package has been successfully loaded, but it probably was not found. In such a case, the library, which is usually located at `$CGAL_ROOT/lib/libCGAL.so` (or `$CGAL/lib/libCGAL.so` for older packages), should be explicitly loaded in ROOT (often via `gSystem->Load()`).
+
+ - Sometimes older packages relied on different environmental variables than are used in more recent packages. If a package does not seem to be working, check that the environmental variable that are needed are actually defined and that necessary files can actually be found.
+
 ### Mac OS X Specific Troubleshooting
+
+ - If CVMFS is failing to access packages, then restart the docker-machine with `docker-machine restart $vmName`. You will need to replace `vmName` with the name of your VM - it is almost always `default`.
 
  - If you see errors about clock skew in `make`, you should run make again after your initial `make` finishes. This is caused by the way that files are shared via `nfs`. Running make again should update the build in case any files were missed. (In testing, the files that had clock skews did not appear to be source files which would have mattered for the build. They were just configuration files. However, it is still a good idea to pay attention to these types of errors).
 

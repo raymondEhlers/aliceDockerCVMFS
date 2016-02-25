@@ -135,7 +135,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>You can now use CVMFS! See the <a href="#usage-instructions">usage instructions</a>. If you need more advanced options, see the <a href="#startdocker.sh-user-configuration">user configuration</a>.</p>
 <hr />
 <h2 id="compile-your-own-code">Compile Your Own Code</h2>
-<p>The work flow here is that you develop in your normal install of AliPhysics on your system (ie that you installed via the automatic or manual installation instructions). Once you are done developing, you load all of the dependencies in CVMFS, compile in the Docker container, and then you work as normal (test, run over data, etc). If you need to make changes to your code, you can edit the file either in</p>
+<p>The work flow here is that you develop in your normal install of AliPhysics on your system (ie that you installed via the automatic or manual installation instructions). Once you are done developing, you load all of the dependencies in CVMFS, compile in the Docker container, and then you work as normal (test, run over data, etc). If you need to make changes to your code, you can edit the file either on the host (your Mac OS X or Linux machine) or inside of the container -</p>
 <p>Note: If your code is stand-alone from packages (ie. If it is not contained in a package, such that you would need to recompile it), then you can just use the method <a href="#pre-built-packages">above</a>.</p>
 <h3 id="setup-aliphysics-and-the-alice-environment">Setup AliPhysics and the ALICE environment</h3>
 <p>These steps only need to be performed once, although steps 2 and 3 will need to be edited if you are using a different AliPhysics version or repeated if you change AliPhysics versions.</p>
@@ -149,12 +149,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="st">             geant3=</span><span class="ot">${GEANT3_ROOT}</span><span class="st"> \</span>
 <span class="st">             aliroot=</span><span class="ot">${ALICE_ROOT}</span><span class="st"> \</span>
 <span class="st">             aliphysics=dockerMaster(master)&quot;</span></code></pre></div></li>
-<li><p>To ensure that you do not overwrite the build on your local machine, make sure to set a build folder, which in the above example is <code>dockerMaster</code> (the AliPhysics version is in parenthesis - in the above example, it is <code>master</code>). To create this folder, load the tuple you just added to <code>alice-env-.conf</code> and then run</p>
+<li><p>To ensure that you do not overwrite the build on your local machine, make sure to set a build folder, which in the above example is named <code>dockerMaster</code> (the AliPhysics version is in parenthesis - in the above example, it is <code>master</code>). To create this folder, load the tuple you added to <code>alice-env-.conf</code> and then run</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Only run this if you have sourced alice-env.sh!!</span>
 $ <span class="kw">git-new-workdir</span> <span class="st">&quot;</span><span class="ot">${ALICE_PREFIX}</span><span class="st">/aliphysics/git&quot;</span> <span class="st">&quot;</span><span class="ot">$(</span><span class="kw">dirname</span> <span class="st">&quot;</span><span class="ot">$ALICE_PHYSICS</span><span class="st">&quot;</span><span class="ot">)</span><span class="st">/src&quot;</span></code></pre></div></li>
 </ol>
 <h3 id="compiling-inside-of-the-docker-container">Compiling Inside of the Docker Container</h3>
-<ol style="list-style-type: decimal">
+<ol start="0" style="list-style-type: decimal">
+<li><p>Follow the instructions <a href="#setup-aliphysics-and-the-alice-environment">above</a> regarding setting up AliPHysics and the ALICE environment!</p></li>
 <li><p>Start Docker and make your $HOME directory available to the Docker container. If necessary, other folders can be made available in the <a href="#startdocker.sh-user-configuration">user configuration</a>.</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">./startDocker.sh</span></code></pre></div></li>
 <li><p>We are now inside the image, so the prompt should have changed. Now configure CVMFS. For CVMFS usage information, see <a href="#cvmfs-instructions">here</a>.</p>
@@ -166,17 +167,19 @@ $ <span class="kw">source</span> setupAliceEnv.sh
 <span class="kw">CernVM-FS</span>: loading Fuse module... done
 <span class="kw">CernVM-FS</span>: mounted cvmfs on /cvmfs/alice.cern.ch
 $ <span class="kw">alienv</span> enter <span class="co"># AliRoot Version</span></code></pre></div></li>
-<li><p>Setup the ALICE environment.</p>
+<li><p>Setup the ALICE environment. Be certain to load the tuple that you setup above!!</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">cd</span> <span class="ot">$ALICE_PREFIX</span>
 $ <span class="kw">source</span> alice-env.sh</code></pre></div></li>
 <li><p>Run CMake and compile.</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Create the directory and move to it</span>
 $ <span class="kw">mkdir</span> -p <span class="st">&quot;</span><span class="ot">$(</span><span class="kw">dirname</span> <span class="st">&quot;</span><span class="ot">$ALICE_PHYSICS</span><span class="st">&quot;</span><span class="ot">)</span><span class="st">/build&quot;</span> <span class="kw">&amp;&amp;</span> <span class="kw">cd</span> <span class="st">&quot;</span><span class="ot">$_</span><span class="st">&quot;</span>
 <span class="co"># CMake and compile. cmakeCommand is listed below in the useful commands section.</span>
+<span class="co"># It does not need to be run every time - only when appropriate!</span>
 $ <span class="kw">eval</span> <span class="ot">$cmakeCommand</span>
 $ <span class="kw">make</span> install</code></pre></div></li>
+<li><p>AliPhysics is now setup and configured. As you develop further code, you will need to return to the <code>build</code> directory and re-run <code>make install</code>. For more information on this type of work flow, see <a href="https://dberzano.github.io/alice/install-aliroot/manual/#build_to_test_your_local_changes">here</a>.</p></li>
 </ol>
-<p>Done! See the <a href="#usage-instructions">usage instructions</a> and the <a href="#useful-commands">useful commands</a> section below. If you need more advanced options, see the <a href="#startdocker.sh-user-configuration">user configuration</a>.</p>
+<p>Done! See the <a href="#usage-instructions">usage instructions</a> and the <a href="#useful-commands">useful commands</a> sections below. If you need more advanced options, see the <a href="#startdocker.sh-user-configuration">user configuration</a>.</p>
 <h3 id="useful-commands">Useful Commands</h3>
 <p>A number of variable are defined in the container for convenience. Additional variables can be set by the user. See the <a href="#startdocker.sh-user-configuration">user configuration</a>.</p>
 <ul>
@@ -198,7 +201,10 @@ $ <span class="kw">make</span> install</code></pre></div></li>
 <h2 id="usage-instructions">Usage Instructions</h2>
 <h3 id="usage-notes">Usage Notes</h3>
 <ul>
-<li>Only files that are saved in directories that have been made available from your system (for example, your $HOME directory) will be saved once you have exited the Docker container! If you can’t access the file outside of the container, then you it will be lost when you exit!</li>
+<li><p>Only files that are saved in directories that have been made available from your system (for example, your $HOME directory) will be saved once you have exited the Docker container! If you can’t access the file outside of the container, then you it will be lost when you exit!</p></li>
+<li><p>A few aliases are defined for convenience. They are:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">lsl</span> -<span class="kw">&gt;</span> <span class="st">&quot;ls -lhXF --color=auto&quot;</span>
+$ <span class="kw">lsa</span> -<span class="kw">&gt;</span> <span class="st">&quot;ls -lhXFa --color=auto&quot;</span> <span class="co"># Same as lsl, but includes all files.</span></code></pre></div></li>
 </ul>
 <h3 id="cvmfs-instructions">CVMFS Instructions</h3>
 <p>Usage of CVMFS is well documented on <a href="https://dberzano.github.io/alice/install-aliroot/cvmfs/#use_aliroot_from_cvmfs">Dario’s Page</a>. The first line in his instructions (the <code>source</code> command) has already been performed by our ALICE setup script.</p>
@@ -214,10 +220,13 @@ $ <span class="kw">make</span> install</code></pre></div></li>
 <li>Move to the <code>build</code> directory and remove the <code>CMakeFiles</code> directory and <code>CMakeFiles.txt</code>, then run CMake again.</li>
 <li>If that does not work, then the <code>build</code> directory needs to be removed. This means that the entire package needs to be rebuilt.</li>
 </ul></li>
-<li>If there are <code>libexpat.so</code> errors, it is related to GEANT. It likely means you have the wrong version! If you run into other issues with <code>cmake</code>, you have two options. You can try to remove <code>CMakeCache.txt</code> and the <code>CMakeFiles</code> folder and try again, but this is not guaranteed to work. Alternatively, you will need to remove the build folder and try again. Note that this will remove any compilation progress that you have made.</li>
+<li><p>If there are <code>libexpat.so</code> errors, it is related to GEANT. It likely means you have the wrong version! If you run into other issues with <code>cmake</code>, you have two options. You can try to remove <code>CMakeCache.txt</code> and the <code>CMakeFiles</code> folder and try again, but this is not guaranteed to work. Alternatively, you will need to remove the build folder and try again. Note that this will remove any compilation progress that you have made.</p></li>
+<li><p>Errors related to <code>CGAL</code> are often related to the <code>CGAL</code> library not being loaded correctly. If it fails to load, check to ensure that the associated variable, <code>$CGAL_ROOT</code> (or <code>$CGAL</code> for older packages), is defined. If the variable is defined, then the package has been successfully loaded, but it probably was not found. In such a case, the library, which is usually located at <code>$CGAL_ROOT/lib/libCGAL.so</code> (or <code>$CGAL/lib/libCGAL.so</code> for older packages), should be explicitly loaded in ROOT (often via <code>gSystem-&gt;Load()</code>).</p></li>
+<li><p>Sometimes older packages relied on different environmental variables than are used in more recent packages. If a package does not seem to be working, check that the environmental variable that are needed are actually defined and that necessary files can actually be found.</p></li>
 </ul>
 <h3 id="mac-os-x-specific-troubleshooting">Mac OS X Specific Troubleshooting</h3>
 <ul>
+<li><p>If CVMFS is failing to access packages, then restart the docker-machine with <code>docker-machine restart $vmName</code>. You will need to replace <code>vmName</code> with the name of your VM - it is almost always <code>default</code>.</p></li>
 <li><p>If you see errors about clock skew in <code>make</code>, you should run make again after your initial <code>make</code> finishes. This is caused by the way that files are shared via <code>nfs</code>. Running make again should update the build in case any files were missed. (In testing, the files that had clock skews did not appear to be source files which would have mattered for the build. They were just configuration files. However, it is still a good idea to pay attention to these types of errors).</p></li>
 <li><p>If you connect to Cisco AnyConnect (ie for the Yale VPN), it will probably break the network routing until you restart. Based on the available information, <a href="https://github.com/boot2docker/boot2docker/issues/628#issuecomment-148961252">this</a> should resolve the issue, but I have not tested it yet. Note that boot2docker is the old name for what we are using now.</p></li>
 </ul>
