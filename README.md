@@ -215,9 +215,11 @@ Further even more advanced variables are also available. Please see the file for
 
 ### Usage Notes
 
-- Only files that are saved in directories that have been made available from your system (for example, your $HOME directory) will be saved once you have exited the Docker container! If you can't access the file outside of the container, then you it will be lost when you exit!
+ - If you are using Mac OS X and are not planning to use `startDocker.sh` for a while, consider running `docker-machine stop $vmName` to save battery life. You will need to replace `vmName` with the name of your VM - it is almost always `default`. It will automatically start when you run `startDocker.sh`, but it takes a few seconds to start, so it is usually left running.
 
-- A few aliases are defined for convenience. They are:
+ - Only files that are saved in directories that have been made available from your system (for example, your $HOME directory) will be saved once you have exited the Docker container! If you can't access the file outside of the container, then you it will be lost when you exit!
+
+ - A few aliases are defined for convenience. They are:
 
     ```bash
     $ lsl -> "ls -lhXF --color=auto"
