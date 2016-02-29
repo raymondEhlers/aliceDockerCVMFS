@@ -53,6 +53,53 @@ updateTimeLastRun ()
     echo "$(date +%s)" > .startDockerInternal
 }
 
+# @info:    Checks for internet connection
+# @args:    bool specifying whether this is being used with docker-machine
+checkForInternetConnection ()
+{
+    # Configures the message to display
+    dockerMacine="${1:-}"
+    if [[ "$dockerMacine" == true ]];
+    then
+        message=" in docker-machine"
+    else
+        message=""
+    fi
+
+    # Disable exit on error here so that we can handle the error
+    set +o errexit
+
+    echoInfo "Checking for internet connection$message"
+
+    # Check for connectivity
+    # If it fails, it will exit because errexit is set.
+    if [[ "$dockerMacine" == true ]];
+    then
+        docker-machine ssh "$dockerMachineName" curl -sSf http://www.google.com > /dev/null
+    else
+        curl -sSf http://www.google.com > /dev/null
+    fi
+
+    # Displays result
+    if [[ "$?" -eq 0 ]];
+    then
+        echoSuccess "Internet connection available$message!"
+    else
+        if [[ "$dockerMacine" == true ]];
+        then
+            echoError "!!! Internet connection does not appear to be available$message! It is needed for CVMFS !!!"
+            echoInfo "Restarting docker-machine!"
+            docker-machine restart "$dockerMachineName"
+        else
+            # Does not quit here, as it could be possible to use without a connection
+            echoWarn "!!! Internet connection does not appear to be available! It is needed for CVMFS !!!"
+        fi
+    fi
+
+    # Re-enable exit on error
+    set -o errexit
+}
+
 ##################
 # End of functions
 ##################
@@ -129,6 +176,9 @@ echoProperties "Directories to be mounted: $(echo ${directoriesToMount[@]})"
 echoProperties "Environmental variables to be included: $(echo ${variablesToSet[@]})"
 echoProperties "Force NFS reconfiguration: $forceNFSReconfiguration"
 
+# Check if online - warn if not, since this is required for CVMFS.
+checkForInternetConnection
+
 # Handle the OS specific parts
 echo #EMPTY
 if [[ $(uname -s) == "Darwin" ]];
@@ -146,6 +196,8 @@ then
 
     echoInfo "Loading docker environment"
     eval $(docker-machine env "$dockerMachineName")
+
+    checkForInternetConnection true
 
     # Setup NFS
     echo #EMPTY

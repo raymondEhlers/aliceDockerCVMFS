@@ -55,7 +55,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>Use pre-built package(s) (for example, AliPhysics) and run over data. For more, see <a href="#pre-built-packages">here</a>.</li>
 <li>Use pre-built package(s) (for example, AliRoot) and compile other code against it (for example, a local copy of AliPhysics). For more, see <a href="#compile-your-own-code">here</a>.</li>
 </ul>
-<p>To establish terminology, this is achieved by using a Docker container. A container is roughly an operating system image that has been configured with software. In our case, I have created an image that allows us to use CVMFS. On Mac OS X, this container must run inside of a virtual machine, but all of this is transparent to the user, so the details are not important.</p>
+<p>To establish terminology, this is achieved by using a Docker container. A container is roughly an operating system image that has been configured with software. In our case, I have created an image that allows us to use CVMFS. On Mac OS X, this container must run inside of a virtual machine, but all of this is hidden from the user, so the details are not important.</p>
 <p>Before beginning, it is important to a few things to keep in mind:</p>
 <ol style="list-style-type: decimal">
 <li>Initial access of a given file or executable can be a little slow. Be patient. This should only happen the first time you access the file for a given package (ie when you open <code>aliroot</code>). Once it is loaded, it will work as normal, and should be about as fast as normal.</li>
@@ -155,8 +155,8 @@ $ <span class="kw">git-new-workdir</span> <span class="st">&quot;</span><span cl
 </ol>
 <h3 id="compiling-inside-of-the-docker-container">Compiling Inside of the Docker Container</h3>
 <ol start="0" style="list-style-type: decimal">
-<li><p>Follow the instructions <a href="#setup-aliphysics-and-the-alice-environment">above</a> regarding setting up AliPHysics and the ALICE environment!</p></li>
-<li><p>Start Docker and make your $HOME directory available to the Docker container. If necessary, other folders can be made available in the <a href="#startdocker.sh-user-configuration">user configuration</a>.</p>
+<li><p>Follow the instructions <a href="#setup-aliphysics-and-the-alice-environment">above</a> regarding setting up AliPhysics and the ALICE environment!</p></li>
+<li><p>Start Docker and make your <code>$HOME</code> directory available to the Docker container. If necessary, other folders can be made available in the <a href="#startdocker.sh-user-configuration">user configuration</a>.</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">./startDocker.sh</span></code></pre></div></li>
 <li><p>We are now inside the image, so the prompt should have changed. Now configure CVMFS. For CVMFS usage information, see <a href="#cvmfs-instructions">here</a>.</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Your output should look very similar</span>
@@ -184,7 +184,7 @@ $ <span class="kw">make</span> install</code></pre></div></li>
 <p>A number of variable are defined in the container for convenience. Additional variables can be set by the user. See the <a href="#startdocker.sh-user-configuration">user configuration</a>.</p>
 <ul>
 <li><code>$ALICE_PREFIX</code> is set if you loaded the ALICE environment on your local machine before running the <code>startDocker.sh</code> script. Otherwise, it automatically be set to “<span class="math inline">$HOME/alicesw&quot;, as `$</span>ALICE_PREFIX`is often set to this value.</li>
-<li><p><code>$cmakeCommand</code> is set to the cmake command for AliPhysics so that you do not need to copy and paste. Use it with <code>eval $cmakeCommand</code>. The specific command (as of Feb 2016) is</p>
+<li><p><code>$cmakeCommand</code> is set to the <code>cmake</code> command for AliPhysics so that you do not need to copy and paste. Use it with <code>eval $cmakeCommand</code>. The specific command (as of Feb 2016) is</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cmake</span> <span class="st">&quot;</span><span class="ot">$(</span><span class="kw">dirname</span> <span class="st">&quot;</span><span class="ot">$ALICE_PHYSICS</span><span class="st">&quot;</span><span class="ot">)</span><span class="st">/src&quot;</span> -DCMAKE_INSTALL_PREFIX=<span class="st">&quot;</span><span class="ot">$ALICE_PHYSICS</span><span class="st">&quot;</span> -DCMAKE_C_COMPILER=<span class="kw">`root-config</span> --cc<span class="kw">`</span> -DCMAKE_CXX_COMPILER=<span class="kw">`root-config</span> --cxx<span class="kw">`</span> -DCMAKE_Fortran_COMPILER=<span class="kw">`root-config</span> --f77<span class="kw">`</span> -DALIEN=<span class="st">&quot;</span><span class="ot">$ALIEN_DIR</span><span class="st">&quot;</span> -DROOTSYS=<span class="st">&quot;</span><span class="ot">$ROOTSYS</span><span class="st">&quot;</span> -DFASTJET=<span class="st">&quot;</span><span class="ot">$FASTJET</span><span class="st">&quot;</span> -DCGAL=<span class="st">&quot;</span><span class="ot">$CGAL_ROOT</span><span class="st">&quot;</span> -DALIROOT=<span class="st">&quot;</span><span class="ot">$ALICE_ROOT</span><span class="st">&quot;</span> -DCMAKE_BUILD_TYPE=RELWITHDEBINFO </code></pre></div></li>
 </ul>
 <hr />
@@ -223,25 +223,32 @@ $ <span class="kw">lsa</span> -<span class="kw">&gt;</span> <span class="st">&qu
 <li><p>If there are <code>libexpat.so</code> errors, it is related to GEANT. It likely means you have the wrong version! If you run into other issues with <code>cmake</code>, you have two options. You can try to remove <code>CMakeCache.txt</code> and the <code>CMakeFiles</code> folder and try again, but this is not guaranteed to work. Alternatively, you will need to remove the build folder and try again. Note that this will remove any compilation progress that you have made.</p></li>
 <li><p>Errors related to <code>CGAL</code> are often related to the <code>CGAL</code> library not being loaded correctly. If it fails to load, check to ensure that the associated variable, <code>$CGAL_ROOT</code> (or <code>$CGAL</code> for older packages), is defined. If the variable is defined, then the package has been successfully loaded, but it probably was not found. In such a case, the library, which is usually located at <code>$CGAL_ROOT/lib/libCGAL.so</code> (or <code>$CGAL/lib/libCGAL.so</code> for older packages), should be explicitly loaded in ROOT (often via <code>gSystem-&gt;Load()</code>).</p></li>
 <li><p>Sometimes older packages relied on different environmental variables than are used in more recent packages. If a package does not seem to be working, check that the environmental variable that are needed are actually defined and that necessary files can actually be found.</p></li>
+<li><p>If the output from the <code>setupAliceEnv.sh</code> script looks similar to:</p>
+<pre><code>Warning: failed to access http://cvmfs-stratum-one.cern.ch/cvmfs/alice.cern.ch/.cvmfspublished through proxy DIRECT
+Warning: failed to use Geo-API with cvmfs-stratum-one.cern.ch
+Warning: failed to access http://cernvmfs.gridpp.rl.ac.uk/cvmfs/alice.cern.ch/.cvmfspublished through proxy DIRECT
+Warning: failed to use Geo-API with cernvmfs.gridpp.rl.ac.uk
+...</code></pre>
+<p>then CVMFS cannot access the necessary servers. In this case, check your internet connection.</p>
+<p>For Mac OS X, exit the container, then restart the docker-machine with <code>docker-machine restart $vmName</code>. You will need to replace <code>vmName</code> with the name of your VM - it is almost always <code>default</code>.</p></li>
 </ul>
 <h3 id="mac-os-x-specific-troubleshooting">Mac OS X Specific Troubleshooting</h3>
 <ul>
-<li><p>If CVMFS is failing to access packages, then restart the docker-machine with <code>docker-machine restart $vmName</code>. You will need to replace <code>vmName</code> with the name of your VM - it is almost always <code>default</code>.</p></li>
 <li><p>If you see errors about clock skew in <code>make</code>, you should run make again after your initial <code>make</code> finishes. This is caused by the way that files are shared via <code>nfs</code>. Running make again should update the build in case any files were missed. (In testing, the files that had clock skews did not appear to be source files which would have mattered for the build. They were just configuration files. However, it is still a good idea to pay attention to these types of errors).</p></li>
-<li><p>If you connect to Cisco AnyConnect (ie for the Yale VPN), it will probably break the network routing until you restart. Based on the available information, <a href="https://github.com/boot2docker/boot2docker/issues/628#issuecomment-148961252">this</a> should resolve the issue, but I have not tested it yet. Note that boot2docker is the old name for what we are using now.</p></li>
+<li><p>If you connect to Cisco AnyConnect VPN client, it will probably break the network routing until you restart. Based on the available information, <a href="https://github.com/boot2docker/boot2docker/issues/628#issuecomment-148961252">this</a> should resolve the issue, but I have not tested it yet. Note that <code>boot2docker</code> is the old name for what we are using now.</p></li>
 </ul>
 <h4 id="docker-machine-nfs-troubleshooting"><code>docker-machine-nfs</code> Troubleshooting</h4>
 <ul>
 <li><p>If <code>docker-machine-nfs</code> has trouble with the <code>/etc/exports</code> file, it can often be solved by (re)moving the file and allowing it to start from scratch. As long as you do not use <code>nfs</code> to share files outside of this process, there are no problems with starting over. To try this approach, backup the file</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">sudo</span> mv /etc/exports /etc/exports.bak</code></pre></div>
 <p>Then run <code>./startDocker.sh</code> again. If the issue is resolved and you don’t use <code>nfs</code> elsewhere, you can delete this file. If the issue is not resolved, you can restore the backup if you desire (although a newly generated configuration should be fine, so it is likely not necessary).</p></li>
-<li><p>If you add a directory in <code>userConfig.conf</code> and <code>docker-machine-nfs</code> claims to have mounted it, but it is not accessible in the contianer, then change <code>forceNFSReconfiguration</code> to <code>true</code> in <code>userConfig.conf</code> and try again. Once the issue is resolved, be certain to change it back to <code>false</code>!</p></li>
+<li><p>If you add a directory in <code>userConfig.conf</code> and <code>docker-machine-nfs</code> claims to have mounted it, but it is not accessible in the container, then change <code>forceNFSReconfiguration</code> to <code>true</code> in <code>userConfig.conf</code> and try again. Once the issue is resolved, be certain to change it back to <code>false</code>!</p></li>
 </ul>
 <hr />
 <h2 id="technical-details">Technical Details</h2>
 <p>If you are a regular user, you probably do not need to read past here. The section describes the details of how this process works and why decisions were made, so it is only relevant for advanced users.</p>
 <h3 id="startdocker.sh-script"><code>startDocker.sh</code> Script</h3>
-<p>This script was created to vastly simplify all of the setup. Different approaches are required on Linux (normal docker) and Mac OS X (boot2docker + NFS), but this script allows us to use the approach on both systems. The operations that the script preforms are described below.</p>
+<p>This script was created to vastly simplify all of the setup. Different approaches are required on Linux (normal docker) and Mac OS X (<code>docker-machine</code> + <code>NFS</code>), but this script allows us to use the approach on both systems. The operations that the script preforms are described below.</p>
 <h4 id="tldr">TL;DR</h4>
 <p>These operations are explained below.</p>
 <p>Mac OS X:</p>
@@ -267,16 +274,16 @@ $ <span class="kw">docker</span> run -it --rm --privileged -v cvmfsCache:/cvmfsC
 <p>We use <code>nfs</code> to share files because VirtualBox or VMWare file sharing is rather slow. <code>docker-machine-nfs</code> shares host files over <code>nfs</code> to the container. This script is very useful because it takes a complicated process and seems to make it very easy.</p>
 <p>Note that <code>nfs</code> maps all files created in the container to the host user’s user id and group, regardless of who or how the file was created.</p>
 <h5 id="linux">Linux</h5>
-<p>Sharing files with the host is natively supported in Docker. However, the user id (uid) of the user in the Docker container does not match that of your user. So any files created in the Docker container would not have the proper permissions. Consequently, we need to change the uid of the container.</p>
-<p>This approach is outline <a href="https://denibertovic.com/posts/handling-permissions-with-docker-volumes/">here</a>. It explains it in detail, but roughly, we pass the uid of the host user to the container, which then creates a new user and switches to it. Note that this process is not required for Mac OS X, since <code>nfs</code> remaps the uid (see above), but it also doesn’t hurt, and it allows for a consistent approach (otherwise we would likely need a different image for each platform).</p>
+<p>Sharing files with the host is natively supported in Docker. However, the user id (<code>uid</code>) of the user in the Docker container does not match that of your user. So any files created in the Docker container would not have the proper permissions. Consequently, we need to change the <code>uid</code> of the container.</p>
+<p>This approach is outline <a href="https://denibertovic.com/posts/handling-permissions-with-docker-volumes/">here</a>. It explains it in detail, but roughly, we pass the <code>uid</code> of the host user to the container, which then creates a new user and switches to it. Note that this process is not required for Mac OS X, since <code>nfs</code> remaps the <code>uid</code> (see above), but it also doesn’t hurt, and it allows for a consistent approach (otherwise we would likely need a different image for each platform).</p>
 <p>Note that in principle user namespaces are perfectly suited for this issue. However, there are a few problems:</p>
 <ol style="list-style-type: decimal">
 <li>User namespaces are not compatible with privileged containers, which are required for the way that CVMFS is currently mounted.</li>
-<li>The sub uids don’t map in the host correctly. So the permissions still seem wrong. For more information, see (for example) <a href="https://stackoverflow.com/q/35291520">here</a>.</li>
+<li>The sub <code>uids</code> don’t map in the host correctly. So the permissions still seem wrong. For more information, see (for example) <a href="https://stackoverflow.com/q/35291520">here</a>.</li>
 </ol>
 <p>These may be resolved quickly, but they are still very new in Docker as of Feb 2016, so there is not a tremendous amount of information about them yet.</p>
 <h4 id="docker-volume">Docker Volume</h4>
-<p>We want to store the CVMFS data persistently to save time on cached data. This command will store the data persistently in what Docker calls volumes. The CVMFS cache is set to uset at most 16.5 GB (15 GB + 10% for overhead).</p>
+<p>We want to store the CVMFS data persistently to save time on cached data. This command will store the data persistently in what Docker calls volumes. The CVMFS cache is set to use at most 16.5 GB (15 GB + 10% for overhead).</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># The CVMFS data will be cached so that it will run faster</span>
 $ <span class="kw">docker</span> volume create --name cvmfsCache</code></pre></div>
 <h4 id="docker-pull">Docker Pull</h4>
@@ -293,7 +300,7 @@ $ <span class="kw">docker</span> run -it --rm --privileged -v cvmfsCache:/cvmfsC
 <li><code>--rm</code> deletes the container when it is exited, which is the Docker convention.</li>
 <li><code>--privileged</code> allows the container to use fuse, which is required to mount directories with CVMFS. This could be avoided by mounting the directories in the host operating system, but this gets messy and would likely be slower on Mac OS X (since it has to mount over <code>nfs</code>), so it is not currently the preferred option.</li>
 <li><code>-v</code> mounts volumes. It is used to mount the CVMFS cache, as well as the host folders.</li>
-<li><code>-e</code> sets a number of variables in the container. <code>$LOCAL_USER_ID</code> must contain the uid of the local user so that using files from the host is configured correctly.</li>
+<li><code>-e</code> sets a number of variables in the container. <code>$LOCAL_USER_ID</code> must contain the <code>uid</code> of the local user so that using files from the host is configured correctly.</li>
 </ul>
 <p><a href="https://hub.docker.com/r/rehlers/alice-cvmfs/">The image</a> is derived from the Dario’s <a href="https://hub.docker.com/r/alisw/slc6-builder/">aliSW Scientific Linux 6 image</a> used on the build servers. A number of pieces of software are added and updates are applied. It is extremely likely that the image could be substantially shrunk if someone was willing to put in the time. However, it does not seem worthwhile at the moment.</p>
 </body>

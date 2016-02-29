@@ -11,7 +11,7 @@ There are two main work flows:
  - Use pre-built package(s) (for example, AliPhysics) and run over data. For more, see [here](#pre-built-packages).
  - Use pre-built package(s) (for example, AliRoot) and compile other code against it (for example, a local copy of AliPhysics). For more, see [here](#compile-your-own-code).
 
-To establish terminology, this is achieved by using a Docker container. A container is roughly an operating system image that has been configured with software. In our case, I have created an image that allows us to use CVMFS. On Mac OS X, this container must run inside of a virtual machine, but all of this is transparent to the user, so the details are not important.
+To establish terminology, this is achieved by using a Docker container. A container is roughly an operating system image that has been configured with software. In our case, I have created an image that allows us to use CVMFS. On Mac OS X, this container must run inside of a virtual machine, but all of this is hidden from the user, so the details are not important.
 
 Before beginning, it is important to a few things to keep in mind:
 
@@ -141,9 +141,9 @@ These steps only need to be performed once, although steps 2 and 3 will need to 
 
 ### Compiling Inside of the Docker Container
 
-0. Follow the instructions [above](#setup-aliphysics-and-the-alice-environment) regarding setting up AliPHysics and the ALICE environment!
+0. Follow the instructions [above](#setup-aliphysics-and-the-alice-environment) regarding setting up AliPhysics and the ALICE environment!
 
-1. Start Docker and make your $HOME directory available to the Docker container. If necessary, other folders can be made available in the [user configuration](#startdocker.sh-user-configuration).
+1. Start Docker and make your `$HOME` directory available to the Docker container. If necessary, other folders can be made available in the [user configuration](#startdocker.sh-user-configuration).
 
     ```bash
     $ ./startDocker.sh
@@ -189,7 +189,7 @@ Done! See the [usage instructions](#usage-instructions) and the [useful commands
 A number of variable are defined in the container for convenience. Additional variables can be set by the user. See the [user configuration](#startdocker.sh-user-configuration).
 
  - `$ALICE_PREFIX` is set if you loaded the ALICE environment on your local machine before running the `startDocker.sh` script. Otherwise, it automatically be set to "$HOME/alicesw", as `$ALICE_PREFIX`is often set to this value.
- - `$cmakeCommand` is set to the cmake command for AliPhysics so that you do not need to copy and paste. Use it with `eval $cmakeCommand`. The specific command (as of Feb 2016) is
+ - `$cmakeCommand` is set to the `cmake` command for AliPhysics so that you do not need to copy and paste. Use it with `eval $cmakeCommand`. The specific command (as of Feb 2016) is
 
     ```bash
     cmake "$(dirname "$ALICE_PHYSICS")/src" -DCMAKE_INSTALL_PREFIX="$ALICE_PHYSICS" -DCMAKE_C_COMPILER=`root-config --cc` -DCMAKE_CXX_COMPILER=`root-config --cxx` -DCMAKE_Fortran_COMPILER=`root-config --f77` -DALIEN="$ALIEN_DIR" -DROOTSYS="$ROOTSYS" -DFASTJET="$FASTJET" -DCGAL="$CGAL_ROOT" -DALIROOT="$ALICE_ROOT" -DCMAKE_BUILD_TYPE=RELWITHDEBINFO 
@@ -249,13 +249,25 @@ Further undocumented options can be found by opening the `alienv` script, which 
 
  - Sometimes older packages relied on different environmental variables than are used in more recent packages. If a package does not seem to be working, check that the environmental variable that are needed are actually defined and that necessary files can actually be found.
 
-### Mac OS X Specific Troubleshooting
+ - If the output from the `setupAliceEnv.sh` script looks similar to: 
 
- - If CVMFS is failing to access packages, then restart the docker-machine with `docker-machine restart $vmName`. You will need to replace `vmName` with the name of your VM - it is almost always `default`.
+    ````
+    Warning: failed to access http://cvmfs-stratum-one.cern.ch/cvmfs/alice.cern.ch/.cvmfspublished through proxy DIRECT
+    Warning: failed to use Geo-API with cvmfs-stratum-one.cern.ch
+    Warning: failed to access http://cernvmfs.gridpp.rl.ac.uk/cvmfs/alice.cern.ch/.cvmfspublished through proxy DIRECT
+    Warning: failed to use Geo-API with cernvmfs.gridpp.rl.ac.uk
+    ...
+    ````
+
+    then CVMFS cannot access the necessary servers. In this case, check your internet connection. 
+    
+    For Mac OS X, exit the container, then restart the docker-machine with `docker-machine restart $vmName`. You will need to replace `vmName` with the name of your VM - it is almost always `default`.
+
+### Mac OS X Specific Troubleshooting
 
  - If you see errors about clock skew in `make`, you should run make again after your initial `make` finishes. This is caused by the way that files are shared via `nfs`. Running make again should update the build in case any files were missed. (In testing, the files that had clock skews did not appear to be source files which would have mattered for the build. They were just configuration files. However, it is still a good idea to pay attention to these types of errors).
 
- - If you connect to Cisco AnyConnect (ie for the Yale VPN), it will probably break the network routing until you restart. Based on the available information, [this](https://github.com/boot2docker/boot2docker/issues/628#issuecomment-148961252) should resolve the issue, but I have not tested it yet. Note that boot2docker is the old name for what we are using now.
+ - If you connect to Cisco AnyConnect VPN client, it will probably break the network routing until you restart. Based on the available information, [this](https://github.com/boot2docker/boot2docker/issues/628#issuecomment-148961252) should resolve the issue, but I have not tested it yet. Note that `boot2docker` is the old name for what we are using now.
 
 #### `docker-machine-nfs` Troubleshooting
 
@@ -267,7 +279,7 @@ Further undocumented options can be found by opening the `alienv` script, which 
 
     Then run `./startDocker.sh` again. If the issue is resolved and you don't use `nfs` elsewhere, you can delete this file. If the issue is not resolved, you can restore the backup if you desire (although a newly generated configuration should be fine, so it is likely not necessary).
 
- - If you add a directory in `userConfig.conf` and `docker-machine-nfs` claims to have mounted it, but it is not accessible in the contianer, then change `forceNFSReconfiguration` to `true` in `userConfig.conf` and try again. Once the issue is resolved, be certain to change it back to `false`!
+ - If you add a directory in `userConfig.conf` and `docker-machine-nfs` claims to have mounted it, but it is not accessible in the container, then change `forceNFSReconfiguration` to `true` in `userConfig.conf` and try again. Once the issue is resolved, be certain to change it back to `false`!
 
 --------------------
 
@@ -277,7 +289,7 @@ If you are a regular user, you probably do not need to read past here. The secti
 
 ### `startDocker.sh` Script 
 
-This script was created to vastly simplify all of the setup. Different approaches are required on Linux (normal docker) and Mac OS X (boot2docker + NFS), but this script allows us to use the approach on both systems. The operations that the script preforms are described below.
+This script was created to vastly simplify all of the setup. Different approaches are required on Linux (normal docker) and Mac OS X (`docker-machine` + `NFS`), but this script allows us to use the approach on both systems. The operations that the script preforms are described below.
 
 #### TL;DR
 
@@ -318,20 +330,20 @@ Note that `nfs` maps all files created in the container to the host user's user 
 
 ##### Linux
 
-Sharing files with the host is natively supported in Docker. However, the user id (uid) of the user in the Docker container does not match that of your user. So any files created in the Docker container would not have the proper permissions. Consequently, we need to change the uid of the container.
+Sharing files with the host is natively supported in Docker. However, the user id (`uid`) of the user in the Docker container does not match that of your user. So any files created in the Docker container would not have the proper permissions. Consequently, we need to change the `uid` of the container.
 
-This approach is outline [here](https://denibertovic.com/posts/handling-permissions-with-docker-volumes/). It explains it in detail, but roughly, we pass the uid of the host user to the container, which then creates a new user and switches to it. Note that this process is not required for Mac OS X, since `nfs` remaps the uid (see above), but it also doesn't hurt, and it allows for a consistent approach (otherwise we would likely need a different image for each platform).
+This approach is outline [here](https://denibertovic.com/posts/handling-permissions-with-docker-volumes/). It explains it in detail, but roughly, we pass the `uid` of the host user to the container, which then creates a new user and switches to it. Note that this process is not required for Mac OS X, since `nfs` remaps the `uid` (see above), but it also doesn't hurt, and it allows for a consistent approach (otherwise we would likely need a different image for each platform).
 
 Note that in principle user namespaces are perfectly suited for this issue. However, there are a few problems:
 
 1. User namespaces are not compatible with privileged containers, which are required for the way that CVMFS is currently mounted.
-2. The sub uids don't map in the host correctly. So the permissions still seem wrong. For more information, see (for example) [here](https://stackoverflow.com/q/35291520).
+2. The sub `uids` don't map in the host correctly. So the permissions still seem wrong. For more information, see (for example) [here](https://stackoverflow.com/q/35291520).
 
 These may be resolved quickly, but they are still very new in Docker as of Feb 2016, so there is not a tremendous amount of information about them yet.
 
 #### Docker Volume
 
-We want to store the CVMFS data persistently to save time on cached data. This command will store the data persistently in what Docker calls volumes. The CVMFS cache is set to uset at most 16.5 GB (15 GB + 10% for overhead).
+We want to store the CVMFS data persistently to save time on cached data. This command will store the data persistently in what Docker calls volumes. The CVMFS cache is set to use at most 16.5 GB (15 GB + 10% for overhead).
 
 ```bash
 # The CVMFS data will be cached so that it will run faster
@@ -362,6 +374,6 @@ The options are:
  - `--rm` deletes the container when it is exited, which is the Docker convention.
  - `--privileged` allows the container to use fuse, which is required to mount directories with CVMFS. This could be avoided by mounting the directories in the host operating system, but this gets messy and would likely be slower on Mac OS X (since it has to mount over `nfs`), so it is not currently the preferred option.
  - `-v` mounts volumes. It is used to mount the CVMFS cache, as well as the host folders.
- - `-e` sets a number of variables in the container. `$LOCAL_USER_ID` must contain the uid of the local user so that using files from the host is configured correctly.
+ - `-e` sets a number of variables in the container. `$LOCAL_USER_ID` must contain the `uid` of the local user so that using files from the host is configured correctly.
 
 [The image](https://hub.docker.com/r/rehlers/alice-cvmfs/) is derived from the Dario's [aliSW Scientific Linux 6 image](https://hub.docker.com/r/alisw/slc6-builder/) used on the build servers. A number of pieces of software are added and updates are applied. It is extremely likely that the image could be substantially shrunk if someone was willing to put in the time. However, it does not seem worthwhile at the moment.
