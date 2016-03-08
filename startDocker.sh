@@ -69,15 +69,16 @@ checkForInternetConnection ()
     # Disable exit on error here so that we can handle the error
     set +o errexit
 
-    echoInfo "Checking for internet connection$message"
+    echoInfo "Checking for internet connection$message. This may take a bit"
 
     # Check for connectivity
     # If it fails, it will exit because errexit is set.
     if [[ "$dockerMacine" == true ]];
     then
-        docker-machine ssh "$dockerMachineName" curl -sSf http://www.google.com > /dev/null
+        # Timeouts after 10 seconds so that the user doesn't have to wait forever
+        docker-machine ssh "$dockerMachineName" curl --max-time 10 -sSf http://www.google.com > /dev/null
     else
-        curl -sSf http://www.google.com > /dev/null
+        curl --max-time 10 -sSf http://www.google.com > /dev/null
     fi
 
     # Displays result
