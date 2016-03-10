@@ -107,8 +107,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">curl</span> -s https://raw.githubusercontent.com/adlogix/docker-machine-nfs/master/docker-machine-nfs.sh <span class="kw">|</span>
   <span class="kw">sudo</span> tee /usr/local/bin/docker-machine-nfs <span class="kw">&gt;</span> /dev/null <span class="kw">&amp;&amp;</span> <span class="kw">\</span>
   <span class="kw">sudo</span> chmod +x /usr/local/bin/docker-machine-nfs</code></pre></div></li>
-<li><p>Create a docker-machine VM named <code>default</code> (<code>default</code> is the standard name in the docker-machine universe). Note that the initial size when everything is setup is approximately 2 GB. The VM will only use the space actually required to store the VM, growing up to 30 GB total.</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">docker-machine</span> create --driver virtualbox --virtualbox-disk-size <span class="st">&quot;30000&quot;</span> default</code></pre></div></li>
+<li><p>Create a docker-machine VM named <code>default</code> (<code>default</code> is the standard name in the docker-machine universe). Note that the initial size when everything is setup is approximately 2 GB of storage. The VM will only use the space actually required to store the VM, growing up to 30 GB total. The VM can use up to 2 GB of RAM.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">docker-machine</span> create --driver virtualbox --virtualbox-disk-size <span class="st">&quot;30000&quot;</span> --virtualbox-memory 2048 default</code></pre></div></li>
 <li><p>(Recommended) Remove Docker files from Time Machine. These files change very frequently and are very easy to recreate. Go to the Time Machine settings, click options, and then exclude <code>~/.docker/machine/machines</code>. When adding the folder, you may need to click on options to show hidden files.</p></li>
 </ol>
 <h4 id="linux-prerequisites">Linux Prerequisites</h4>
@@ -201,11 +201,12 @@ $ <span class="kw">make</span> install</code></pre></div></li>
 <h2 id="usage-instructions">Usage Instructions</h2>
 <h3 id="usage-notes">Usage Notes</h3>
 <ul>
-<li><p>If you are using Mac OS X and are not planning to use <code>startDocker.sh</code> for a while, consider running <code>docker-machine stop $vmName</code> to save battery life. You will need to replace <code>vmName</code> with the name of your VM - it is almost always <code>default</code>. It will automatically start when you run <code>startDocker.sh</code>, but it takes a few seconds to start, so it is usually left running.</p></li>
 <li><p>Only files that are saved in directories that have been made available from your system (for example, your $HOME directory) will be saved once you have exited the Docker container! If you can’t access the file outside of the container, then you it will be lost when you exit!</p></li>
 <li><p>A few aliases are defined for convenience. They are:</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">lsl</span> -<span class="kw">&gt;</span> <span class="st">&quot;ls -lhXF --color=auto&quot;</span>
 $ <span class="kw">lsa</span> -<span class="kw">&gt;</span> <span class="st">&quot;ls -lhXFa --color=auto&quot;</span> <span class="co"># Same as lsl, but includes all files.</span></code></pre></div></li>
+<li><p>If you are using Mac OS X and are not planning to use <code>startDocker.sh</code> for a while, consider running <code>docker-machine stop $vmName</code> to save battery life. You will need to replace <code>vmName</code> with the name of your VM - it is almost always <code>default</code>. It will automatically start when you run <code>startDocker.sh</code>, but it takes a few seconds to start, so it is usually left running.</p></li>
+<li><p>If you are using Mac OS X and you seem to be short of RAM, you can check the memory usage in <em>Activity Monitor</em>. Switch to the memory tab and look for the process <code>VBoxHeadless</code>. <strong>Only if you are not running the VM</strong> and you need more memory, you can stop the VM with <code>docker-machine stop $vmName</code> (as above, you will need to replace <code>vmName</code> with the name of your VM - it is almost always <code>default</code>). It will be started next time you run the <code>startDocker.sh</code> script.</p></li>
 </ul>
 <h3 id="cvmfs-instructions">CVMFS Instructions</h3>
 <p>Usage of CVMFS is well documented on <a href="https://dberzano.github.io/alice/install-aliroot/cvmfs/#use_aliroot_from_cvmfs">Dario’s Page</a>. The first line in his instructions (the <code>source</code> command) has already been performed by our ALICE setup script.</p>

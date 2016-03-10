@@ -63,10 +63,10 @@ Mac OS X Specific:
       sudo chmod +x /usr/local/bin/docker-machine-nfs
     ```
 
-3. Create a docker-machine VM named `default` (`default` is the standard name in the docker-machine universe). Note that the initial size when everything is setup is approximately 2 GB. The VM will only use the space actually required to store the VM, growing up to 30 GB total. 
+3. Create a docker-machine VM named `default` (`default` is the standard name in the docker-machine universe). Note that the initial size when everything is setup is approximately 2 GB of storage. The VM will only use the space actually required to store the VM, growing up to 30 GB total. The VM can use up to 2 GB of RAM.
 
     ```bash
-    $ docker-machine create --driver virtualbox --virtualbox-disk-size "30000" default
+    $ docker-machine create --driver virtualbox --virtualbox-disk-size "30000" --virtualbox-memory 2048 default
     ```
 
 4. (Recommended) Remove Docker files from Time Machine. These files change very frequently and are very easy to recreate. Go to the Time Machine settings, click options, and then exclude `~/.docker/machine/machines`. When adding the folder, you may need to click on options to show hidden files.
@@ -215,8 +215,6 @@ Further even more advanced variables are also available. Please see the file for
 
 ### Usage Notes
 
- - If you are using Mac OS X and are not planning to use `startDocker.sh` for a while, consider running `docker-machine stop $vmName` to save battery life. You will need to replace `vmName` with the name of your VM - it is almost always `default`. It will automatically start when you run `startDocker.sh`, but it takes a few seconds to start, so it is usually left running.
-
  - Only files that are saved in directories that have been made available from your system (for example, your $HOME directory) will be saved once you have exited the Docker container! If you can't access the file outside of the container, then you it will be lost when you exit!
 
  - A few aliases are defined for convenience. They are:
@@ -225,6 +223,10 @@ Further even more advanced variables are also available. Please see the file for
     $ lsl -> "ls -lhXF --color=auto"
     $ lsa -> "ls -lhXFa --color=auto" # Same as lsl, but includes all files.
     ```
+
+ - If you are using Mac OS X and are not planning to use `startDocker.sh` for a while, consider running `docker-machine stop $vmName` to save battery life. You will need to replace `vmName` with the name of your VM - it is almost always `default`. It will automatically start when you run `startDocker.sh`, but it takes a few seconds to start, so it is usually left running.
+
+ - If you are using Mac OS X and you seem to be short of RAM, you can check the memory usage in _Activity Monitor_. Switch to the memory tab and look for the process `VBoxHeadless`. **Only if you are not running the VM** and you need more memory, you can stop the VM with `docker-machine stop $vmName` (as above, you will need to replace `vmName` with the name of your VM - it is almost always `default`). It will be started next time you run the `startDocker.sh` script.
 
 ### CVMFS Instructions
 
