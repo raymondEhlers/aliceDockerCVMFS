@@ -15,7 +15,7 @@
 <p>This document is only needed if you are trying to rebuild the docker image that is used for the alice cvmfs instructions. This is <strong>NOT</strong> normally something that has to be done. This is only necessary if changes are made to the setup scripts which should be fairly unlikely.</p>
 <h2 id="instructions">Instructions</h2>
 <p>This docker image is built the same as any other normal image. It depends on the <a href="https://hub.docker.com/r/alisw/slc6-builder/"><code>alisw/slc6-builder</code></a> image that is maintained by Dario. To build an image called alice-cvmfs (as named in the instructions), simply run:</p>
-<pre><code>$ docker built -t alice-cvmfs .</code></pre>
+<pre><code>$ docker build -t alice-cvmfs .</code></pre>
 <p>Once this image is built, it can be used locally by selecting alice-cvmfs as the image. If you want to use it elsewhere, it must be tagged to upload. One must run:</p>
 <pre><code># Find the tag of the build
 $ docker images

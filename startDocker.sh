@@ -302,6 +302,5 @@ echoInfo "Starting docker run"
 # Tell bash to print the command by using debug mode
 # See: https://stackoverflow.com/a/9823281
 set -x
-docker run -it --rm --privileged -v "$cvmfsCacheName":/cvmfsCache ${arguments} -e "LOCAL_USER_ID=$(id -u $USER)" -e cmakeCommand="$cmakeCommand" "$containerImageName" /bin/bash
-#docker run -it --rm --privileged --user="$(id -u $USER):$(id -g $USER)" -e "HOME=$HOME" -v $cvmfsCacheName:/cvmfsCache ${arguments} -e cmakeCommand="$cmakeCommand" $containerImageName /bin/bash
+docker run -it --rm --privileged -v "$cvmfsCacheName":/cvmfsCache ${arguments} -e "LOCAL_USER_ID=$(id -u $USER)" -e "LOCAL_USER_HOME=$HOME" -e cmakeCommand="$cmakeCommand" "$containerImageName" /bin/bash
 set +x
