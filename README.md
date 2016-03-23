@@ -97,11 +97,12 @@ The work flow here is to load pre-built package(s) and run them. For example, on
     ```bash
     # Your output should look very similar
     > source setupAliceEnv.sh
-    Warning: autofs service is not running
-    Warning: failed to use Geo-API with cvmfs.racf.bnl.gov
     CernVM-FS: running with credentials 498:497
     CernVM-FS: loading Fuse module... done
     CernVM-FS: mounted cvmfs on /cvmfs/alice.cern.ch
+    CernVM-FS: running with credentials 498:497
+    CernVM-FS: loading Fuse module... done
+    CernVM-FS: mounted cvmfs on /cvmfs/alice-ocdb.cern.ch
     ```
 
 You can now use CVMFS! See the [usage instructions](#usage-instructions). If you need more advanced options, see the [user configuration](#startdocker.sh-user-configuration).
@@ -154,11 +155,12 @@ These steps only need to be performed once, although steps 2 and 3 will need to 
     ```bash
     # Your output should look very similar
     $ source setupAliceEnv.sh
-    Warning: autofs service is not running
-    Warning: failed to use Geo-API with cvmfs.racf.bnl.gov
     CernVM-FS: running with credentials 498:497
     CernVM-FS: loading Fuse module... done
     CernVM-FS: mounted cvmfs on /cvmfs/alice.cern.ch
+    CernVM-FS: running with credentials 498:497
+    CernVM-FS: loading Fuse module... done
+    CernVM-FS: mounted cvmfs on /cvmfs/alice-ocdb.cern.ch
     $ alienv enter # AliRoot Version
     ```
 
@@ -224,6 +226,8 @@ Further even more advanced variables are also available. Please see the file for
     $ lsa -> "ls -lhXFa --color=auto" # Same as lsl, but includes all files.
     ```
 
+ - The ALICE OCDB is also available. It is in the `/cvmfs/alice-ocdb.cern.ch/` directory.
+
  - If you are using Mac OS X and are not planning to use `startDocker.sh` for a while, consider running `docker-machine stop $vmName` to save battery life. You will need to replace `vmName` with the name of your VM - it is almost always `default`. It will automatically start when you run `startDocker.sh`, but it takes a few seconds to start, so it is usually left running.
 
  - If you are using Mac OS X and you seem to be short of RAM, you can check the memory usage in _Activity Monitor_. Switch to the memory tab and look for the process `VBoxHeadless`. **Only if you are not running the VM** and you need more memory, you can stop the VM with `docker-machine stop $vmName` (as above, you will need to replace `vmName` with the name of your VM - it is almost always `default`). It will be started next time you run the `startDocker.sh` script.
@@ -272,6 +276,8 @@ Further undocumented options can be found by opening the `alienv` script, which 
  - If you see errors about clock skew in `make`, you should run make again after your initial `make` finishes. This is caused by the way that files are shared via `nfs`. Running make again should update the build in case any files were missed. (In testing, the files that had clock skews did not appear to be source files which would have mattered for the build. They were just configuration files. However, it is still a good idea to pay attention to these types of errors).
 
  - If you connect to Cisco AnyConnect VPN client, it will probably break the network routing until you restart. Based on the available information, [this](https://github.com/boot2docker/boot2docker/issues/628#issuecomment-148961252) should resolve the issue, but I have not tested it yet. Note that `boot2docker` is the old name for what we are using now.
+
+    Alternatively, consider switching to `openconnect`. It does not break routing, so docker continues to work just fine.
 
 #### `docker-machine-nfs` Troubleshooting
 

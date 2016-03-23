@@ -1,4 +1,4 @@
 CVMFS_HTTP_PROXY="DIRECT"
-CVMFS_REPOSITORIES="alice.cern.ch"
+CVMFS_REPOSITORIES="alice.cern.ch,alice-ocdb.cern.ch"
 CVMFS_QUOTA_LIMIT=15000   # local cache limit in megabytes
 CVMFS_CACHE_BASE=/cvmfsCache # Location where the files are actually cached

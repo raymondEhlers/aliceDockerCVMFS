@@ -126,11 +126,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><p>We are now inside of the image, so the prompt should have changed. Now just configure CVMFS:</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Your output should look very similar</span>
 <span class="kw">&gt;</span> <span class="kw">source</span> setupAliceEnv.sh
-<span class="kw">Warning</span>: autofs service is not running
-<span class="kw">Warning</span>: failed to use Geo-API with cvmfs.racf.bnl.gov
 <span class="kw">CernVM-FS</span>: running with credentials 498:497
 <span class="kw">CernVM-FS</span>: loading Fuse module... done
-<span class="kw">CernVM-FS</span>: mounted cvmfs on /cvmfs/alice.cern.ch</code></pre></div></li>
+<span class="kw">CernVM-FS</span>: mounted cvmfs on /cvmfs/alice.cern.ch
+<span class="kw">CernVM-FS</span>: running with credentials 498:497
+<span class="kw">CernVM-FS</span>: loading Fuse module... done
+<span class="kw">CernVM-FS</span>: mounted cvmfs on /cvmfs/alice-ocdb.cern.ch</code></pre></div></li>
 </ol>
 <p>You can now use CVMFS! See the <a href="#usage-instructions">usage instructions</a>. If you need more advanced options, see the <a href="#startdocker.sh-user-configuration">user configuration</a>.</p>
 <hr />
@@ -161,11 +162,12 @@ $ <span class="kw">git-new-workdir</span> <span class="st">&quot;</span><span cl
 <li><p>We are now inside the image, so the prompt should have changed. Now configure CVMFS. For CVMFS usage information, see <a href="#cvmfs-instructions">here</a>.</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="co"># Your output should look very similar</span>
 $ <span class="kw">source</span> setupAliceEnv.sh
-<span class="kw">Warning</span>: autofs service is not running
-<span class="kw">Warning</span>: failed to use Geo-API with cvmfs.racf.bnl.gov
 <span class="kw">CernVM-FS</span>: running with credentials 498:497
 <span class="kw">CernVM-FS</span>: loading Fuse module... done
 <span class="kw">CernVM-FS</span>: mounted cvmfs on /cvmfs/alice.cern.ch
+<span class="kw">CernVM-FS</span>: running with credentials 498:497
+<span class="kw">CernVM-FS</span>: loading Fuse module... done
+<span class="kw">CernVM-FS</span>: mounted cvmfs on /cvmfs/alice-ocdb.cern.ch
 $ <span class="kw">alienv</span> enter <span class="co"># AliRoot Version</span></code></pre></div></li>
 <li><p>Setup the ALICE environment. Be certain to load the tuple that you setup above!!</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">cd</span> <span class="ot">$ALICE_PREFIX</span>
@@ -205,6 +207,7 @@ $ <span class="kw">make</span> install</code></pre></div></li>
 <li><p>A few aliases are defined for convenience. They are:</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">lsl</span> -<span class="kw">&gt;</span> <span class="st">&quot;ls -lhXF --color=auto&quot;</span>
 $ <span class="kw">lsa</span> -<span class="kw">&gt;</span> <span class="st">&quot;ls -lhXFa --color=auto&quot;</span> <span class="co"># Same as lsl, but includes all files.</span></code></pre></div></li>
+<li><p>The ALICE OCDB is also available. It is in the <code>/cvmfs/alice-ocdb.cern.ch/</code> directory.</p></li>
 <li><p>If you are using Mac OS X and are not planning to use <code>startDocker.sh</code> for a while, consider running <code>docker-machine stop $vmName</code> to save battery life. You will need to replace <code>vmName</code> with the name of your VM - it is almost always <code>default</code>. It will automatically start when you run <code>startDocker.sh</code>, but it takes a few seconds to start, so it is usually left running.</p></li>
 <li><p>If you are using Mac OS X and you seem to be short of RAM, you can check the memory usage in <em>Activity Monitor</em>. Switch to the memory tab and look for the process <code>VBoxHeadless</code>. <strong>Only if you are not running the VM</strong> and you need more memory, you can stop the VM with <code>docker-machine stop $vmName</code> (as above, you will need to replace <code>vmName</code> with the name of your VM - it is almost always <code>default</code>). It will be started next time you run the <code>startDocker.sh</code> script.</p></li>
 </ul>
@@ -237,7 +240,8 @@ Warning: failed to use Geo-API with cernvmfs.gridpp.rl.ac.uk
 <h3 id="mac-os-x-specific-troubleshooting">Mac OS X Specific Troubleshooting</h3>
 <ul>
 <li><p>If you see errors about clock skew in <code>make</code>, you should run make again after your initial <code>make</code> finishes. This is caused by the way that files are shared via <code>nfs</code>. Running make again should update the build in case any files were missed. (In testing, the files that had clock skews did not appear to be source files which would have mattered for the build. They were just configuration files. However, it is still a good idea to pay attention to these types of errors).</p></li>
-<li><p>If you connect to Cisco AnyConnect VPN client, it will probably break the network routing until you restart. Based on the available information, <a href="https://github.com/boot2docker/boot2docker/issues/628#issuecomment-148961252">this</a> should resolve the issue, but I have not tested it yet. Note that <code>boot2docker</code> is the old name for what we are using now.</p></li>
+<li><p>If you connect to Cisco AnyConnect VPN client, it will probably break the network routing until you restart. Based on the available information, <a href="https://github.com/boot2docker/boot2docker/issues/628#issuecomment-148961252">this</a> should resolve the issue, but I have not tested it yet. Note that <code>boot2docker</code> is the old name for what we are using now.</p>
+<p>Alternatively, consider switching to <code>openconnect</code>. It does not break routing, so docker continues to work just fine.</p></li>
 </ul>
 <h4 id="docker-machine-nfs-troubleshooting"><code>docker-machine-nfs</code> Troubleshooting</h4>
 <ul>
