@@ -187,7 +187,7 @@ then
     echoInfo "Running OS X specific functions"
     echo #EMPTY
     # Start docker-machine and setup the env
-    if [[ $(docker-machine ls | grep "$dockerMachineName" | awk '{print $4}') == "Stopped" ]];
+    if [[ $(docker-machine ls | grep "$dockerMachineName" | awk '{print $4}') != "Running" ]];
     then
         echoInfo "Starting docker machine"
         docker-machine start "$dockerMachineName"
