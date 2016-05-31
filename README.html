@@ -228,12 +228,15 @@ $ <span class="kw">lsa</span> -<span class="kw">&gt;</span> <span class="st">&qu
 <li><p>If there are <code>libexpat.so</code> errors, it is related to GEANT. It likely means you have the wrong version! If you run into other issues with <code>cmake</code>, you have two options. You can try to remove <code>CMakeCache.txt</code> and the <code>CMakeFiles</code> folder and try again, but this is not guaranteed to work. Alternatively, you will need to remove the build folder and try again. Note that this will remove any compilation progress that you have made.</p></li>
 <li><p>Errors related to <code>CGAL</code> are often related to the <code>CGAL</code> library not being loaded correctly. If it fails to load, check to ensure that the associated variable, <code>$CGAL_ROOT</code> (or <code>$CGAL</code> for older packages), is defined. If the variable is defined, then the package has been successfully loaded, but it probably was not found. In such a case, the library, which is usually located at <code>$CGAL_ROOT/lib/libCGAL.so</code> (or <code>$CGAL/lib/libCGAL.so</code> for older packages), should be explicitly loaded in ROOT (often via <code>gSystem-&gt;Load()</code>).</p></li>
 <li><p>Sometimes older packages relied on different environmental variables than are used in more recent packages. If a package does not seem to be working, check that the environmental variable that are needed are actually defined and that necessary files can actually be found.</p></li>
+<li><p>If the output from the <code>setupAliceEnv.sh</code> script includes the line:</p>
+<pre><code>Failed to get D-Bus connection: Operation not permitted</code></pre>
+<p>then it can be ignored! Everything should work correctly!</p></li>
 <li><p>If the output from the <code>setupAliceEnv.sh</code> script looks similar to:</p>
-<pre><code>Warning: failed to access http://cvmfs-stratum-one.cern.ch/cvmfs/alice.cern.ch/.cvmfspublished through proxy DIRECT
-Warning: failed to use Geo-API with cvmfs-stratum-one.cern.ch
-Warning: failed to access http://cernvmfs.gridpp.rl.ac.uk/cvmfs/alice.cern.ch/.cvmfspublished through proxy DIRECT
-Warning: failed to use Geo-API with cernvmfs.gridpp.rl.ac.uk
-...</code></pre>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">Warning</span>: failed to access http://cvmfs-stratum-one.cern.ch/cvmfs/alice.cern.ch/.cvmfspublished through proxy DIRECT
+<span class="kw">Warning</span>: failed to use Geo-API with cvmfs-stratum-one.cern.ch
+<span class="kw">Warning</span>: failed to access http://cernvmfs.gridpp.rl.ac.uk/cvmfs/alice.cern.ch/.cvmfspublished through proxy DIRECT
+<span class="kw">Warning</span>: failed to use Geo-API with cernvmfs.gridpp.rl.ac.uk
+<span class="kw">...</span></code></pre></div>
 <p>then CVMFS cannot access the necessary servers. In this case, check your internet connection.</p>
 <p>For Mac OS X, exit the container, then restart the docker-machine with <code>docker-machine restart $vmName</code>. You will need to replace <code>vmName</code> with the name of your VM - it is almost always <code>default</code>.</p></li>
 </ul>

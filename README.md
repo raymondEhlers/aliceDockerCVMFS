@@ -257,15 +257,23 @@ Further undocumented options can be found by opening the `alienv` script, which 
 
  - Sometimes older packages relied on different environmental variables than are used in more recent packages. If a package does not seem to be working, check that the environmental variable that are needed are actually defined and that necessary files can actually be found.
 
+ - If the output from the `setupAliceEnv.sh` script includes the line:
+
+    ```
+    Failed to get D-Bus connection: Operation not permitted
+    ```
+
+    then it can be ignored! Everything should work correctly!
+
  - If the output from the `setupAliceEnv.sh` script looks similar to: 
 
-    ````
+    ```bash
     Warning: failed to access http://cvmfs-stratum-one.cern.ch/cvmfs/alice.cern.ch/.cvmfspublished through proxy DIRECT
     Warning: failed to use Geo-API with cvmfs-stratum-one.cern.ch
     Warning: failed to access http://cernvmfs.gridpp.rl.ac.uk/cvmfs/alice.cern.ch/.cvmfspublished through proxy DIRECT
     Warning: failed to use Geo-API with cernvmfs.gridpp.rl.ac.uk
     ...
-    ````
+    ```
 
     then CVMFS cannot access the necessary servers. In this case, check your internet connection. 
     
