@@ -1,6 +1,8 @@
 [cernvm]
 name=CernVM packages
 baseurl=https://cvmrepo.web.cern.ch/cvmrepo/yum/cvmfs/EL/$releasever/$basearch/
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CernVM
+gpgcheck=1
 enabled=1
-gpgcheck=0
+protect=1
 

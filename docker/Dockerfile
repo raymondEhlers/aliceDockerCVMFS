@@ -1,15 +1,19 @@
 # The base image is the ALICE slc6 builder image
-FROM alisw/slc6-builder
+FROM alisw/slc7-builder
 MAINTAINER raymond.ehlers@yale.edu
 # Based on https://twiki.cern.ch/twiki/bin/view/Main/DockerCVMFS by ponyisi@utexas.edu 
 
 # Install packages
 # Add CVMFS repo
 COPY cvmfs/cernvm.repo /etc/yum.repos.d/cernvm.repo
+COPY cvmfs/RPM-GPG-KEY-CernVM /etc/pki/rpm-gpg/RPM-GPG-KEY-CernVM
+# Add EPEL repo for newer versions of packages, like cmake
+RUN yum install -y epel-release
 # Update and install packages
 RUN yum update -y && yum install -y \
     openssh-server \
     nano \
+    sudo \
     vim \
     emacs \
     cvmfs \
@@ -17,7 +21,10 @@ RUN yum update -y && yum install -y \
     freetype \
     openssl098e \
     libXpm \
-    libXext
+    libXext \
+    cmake3
+
+RUN ln -s /usr/bin/cmake3 /usr/bin/cmake
 
 # Setup CVMFS settings and permissions
 COPY cvmfs/default.local /etc/cvmfs/default.local
